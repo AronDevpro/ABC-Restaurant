@@ -8,6 +8,13 @@ import lombok.Setter;
 public class Restaurant {
     private int id;
     private String name;
+    private String description;
+    private String openTime;
+    private String closeTime;
     private String address;
     private String phoneNumber;
+    private String image;
+    private String status;
+    private String createdAt;
+    private String updatedAt;
 }
