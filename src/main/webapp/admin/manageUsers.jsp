@@ -48,6 +48,7 @@
                   <th>Name</th>
                   <th>Phone Number</th>
                   <th>User Type</th>
+                  <th>Status</th>
                   <th>Options</th>
                 </tr>
                 </thead>
@@ -60,15 +61,16 @@
                     <td>${user.phoneNumber}</td>
                     <td>${user.accountType}</td>
                     <td>
+                    <span class="badge ${user.status == 'active' ? 'text-bg-primary' : 'text-bg-danger'}">
+                        ${user.status}
+                    </span>
+                    </td>
+                    <td>
                       <button class="btn btn-primary view-user-btn"
-                              data-bs-toggle="modal"
-                              data-bs-target="#exampleModal"
-                              data-user-id="${user.id}"
-                              data-user-email="${user.email}"
-                              data-user-name="${user.firstName} ${user.lastName}"
-                              data-user-phone="${user.phoneNumber}"
-                              data-user-type="${user.accountType}">
-                        View
+                               data-user-id="${user.id}"
+                               data-bs-toggle="modal"
+                               data-bs-target="#updateModel">
+                      Edit
                       </button>  |
                       <a href="user/delete?id=${user.id}" class="btn btn-danger">Delete</a>
                     </td>
@@ -80,14 +82,14 @@
           </div>
           <div class="card-footer">
             <nav aria-label="Page navigation">
-              <ul class="pagination">
+              <ul class="pagination justify-content-end">
                 <c:if test="${currentPage > 1}">
                   <li class="page-item">
                     <a class="page-link" href="?page=${currentPage - 1}&size=${size}">Previous</a>
                   </li>
                 </c:if>
                 <c:forEach begin="1" end="${totalPages}" var="i">
-                  <li class="page-item <c:if test='${i == currentPage}'>active</c:if>'">
+                  <li class="page-item ${i == currentPage ? 'active' : ''}">
                     <a class="page-link" href="?page=${i}&size=${size}">${i}</a>
                   </li>
                 </c:forEach>
@@ -103,17 +105,18 @@
       </div>
     </div>
   </div>
+  </div>
 </section>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModel" tabindex="-1" aria-labelledby="updateModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <form action="${pageContext.request.contextPath}/user/update" method="POST">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">User Details</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/user/update" method="POST">
           <input type="hidden" name="id">
           <div class="mb-3">
             <label class="form-label">First Name</label>
@@ -128,39 +131,31 @@
             <input type="text" class="form-control" name="email">
           </div>
           <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="text" class="form-control" name="password">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" name="phoneNumber">
           </div>
           <div class="mb-3">
             <label class="form-label">Address</label>
             <input type="text" class="form-control" name="address">
           </div>
-          <div class="mb-3">
-            <label class="form-label">Phone Number</label>
-            <input type="text" class="form-control" name="phoneNumber">
-          </div>
-          <div class="mb-3">
+          <div class="mb-3" id="updateNicField" style="display: none">
             <label class="form-label">NIC</label>
             <input type="text" class="form-control" name="nic">
           </div>
-          <div class="mb-3">
+          <div class="mb-3" id="updatePositionField" style="display: none">
             <label class="form-label">Position</label>
             <input type="text" class="form-control" name="position">
           </div>
           <div class="mb-3">
-            <label class="form-label">User Type</label>
-            <select class="form-select" name="accountType">
-              <option value="admin">Admin</option>
-              <option value="customer">Customer</option>
-              <option value="staff">Staff</option>
-            </select>
+            <label class="form-label">Account Type</label>
+            <input readonly type="text" class="form-control" name="accountType" id="updateAccountType">
           </div>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </form>
       </div>
       <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Update changes</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
@@ -199,11 +194,11 @@
           <input type="text" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" name="phoneNumber">
           <label for="phoneNumber">Phone Number</label>
         </div>
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3" style="display: none" id="nicField">
           <input type="text" class="form-control" id="nic" placeholder="Enter NIC Number" name="nic">
           <label for="nic">NIC NO</label>
         </div>
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3" style="display: none" id="positionField">
           <input type="text" class="form-control" id="position" placeholder="Enter Position" name="position">
           <label for="position">Position</label>
         </div>
@@ -238,29 +233,81 @@
   function submitSelectForm() {
     document.getElementById('filterForm').submit();
   }
+
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.view-user-btn').forEach(function(button) {
-      button.addEventListener('click', function() {
-        const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    //display addition inputs based on input value on update modal
+    function toggleAdditionalUpdateFields() {
+      const accountType = document.getElementById('updateAccountType').value;
+      const positionField = document.getElementById('updatePositionField');
+      const nicField = document.getElementById('updateNicField');
+
+      if (accountType === 'Admin') {
+        nicField.style.display = 'block';
+      } else if(accountType === 'Staff') {
+        nicField.style.display = 'block';
+        positionField.style.display = 'block';
+      } else {
+        positionField.style.display = 'none';
+        nicField.style.display = 'none';
+      }
+    }
+    document.getElementById('updateAccountType').addEventListener('change', toggleAdditionalUpdateFields);
+
+    //display addition inputs based on select add model
+    function toggleAdditionalFields() {
+      const accountType = document.getElementById('accountType').value;
+      const positionField = document.getElementById('positionField');
+      const nicField = document.getElementById('nicField');
+
+      if (accountType === 'Admin') {
+        nicField.style.display = 'block';
+      } else if(accountType === 'Staff') {
+        nicField.style.display = 'block';
+        positionField.style.display = 'block';
+      } else {
+        positionField.style.display = 'none';
+        nicField.style.display = 'none';
+      }
+    }
+    document.getElementById('accountType').addEventListener('change', toggleAdditionalFields);
+
+    toggleAdditionalFields();
+
+  //   update model
+    const updateModel = document.getElementById('updateModel');
+    const updateModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
+
+    document.querySelectorAll('.view-user-btn').forEach(function (button) {
+      button.addEventListener('click', function () {
         const userId = this.getAttribute('data-user-id');
-        const userEmail = this.getAttribute('data-user-email');
-        const userName = this.getAttribute('data-user-name');
-        const userPhone = this.getAttribute('data-user-phone');
-        const userType = this.getAttribute('data-user-type');
 
-        // Fill the form fields with the user details
-        document.querySelector('input[name="id"]').value = userId;
-        document.querySelector('input[name="email"]').value = userEmail;
-        document.querySelector('input[name="firstName"]').value = userName.split(' ')[0];
-        document.querySelector('input[name="lastName"]').value = userName.split(' ')[1] || '';
-        document.querySelector('input[name="phoneNumber"]').value = userPhone;
-        document.querySelector('select[name="accountType"]').value = userType;
+        fetch('<%= request.getContextPath() %>/user/view?id=' + userId)
+                .then(response => response.json())
+                .then(data => {
+                  updateModel.querySelector('input[name="id"]').value = data.id;
+                  updateModel.querySelector('input[name="firstName"]').value = data.firstName;
+                  updateModel.querySelector('input[name="lastName"]').value = data.lastName;
+                  updateModel.querySelector('input[name="email"]').value = data.email;
+                  updateModel.querySelector('input[name="phoneNumber"]').value = data.phoneNumber || '';
+                  updateModel.querySelector('input[name="address"]').value = data.address || '';
+                  if(data.accountType === 'Staff'){
+                    updateModel.querySelector('input[name="nic"]').value = data.nic || '';
+                    updateModel.querySelector('input[name="position"]').value = data.position || '';
+                  } else if(data.accountType === 'Admin'){
+                    updateModel.querySelector('input[name="nic"]').value = data.nic || '';
+                  }
+                  updateModel.querySelector('input[name="accountType"]').value = data.accountType;
 
-        // Show the modal
-        modal.show();
+
+                  updateModelInstance.show();
+                  toggleAdditionalUpdateFields();
+                })
+                .catch(error => console.error('Error fetching user details:', error));
       });
     });
+
   });
+
 
 </script>
 <%@ include file="../template/sidebarFooter.jsp" %>

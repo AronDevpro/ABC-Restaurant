@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.gson.Gson;
 import dao.UserDao;
 import factory.UserFactory;
 import jakarta.servlet.RequestDispatcher;
@@ -19,8 +20,6 @@ import java.util.List;
 @WebServlet("/")
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-//    private User user = new User();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,11 +41,8 @@ public class UserServlet extends HttpServlet {
             case "/user/login":
                 loginUser(req, resp);
                 break;
-            case "update":
+            case "/user/update":
                 updateUser(req, resp);
-                break;
-            case "delete":
-                deleteUser(req, resp);
                 break;
             case "/user":
                 getUserList(req, resp);
@@ -70,6 +66,9 @@ public class UserServlet extends HttpServlet {
         switch (servletPath) {
             case "/user":
                 getUserList(req, resp);
+                break;
+            case "/user/view":
+                getUserById(req, resp);
                 break;
             case "/user/delete":
                 deleteUser(req, resp);
@@ -133,8 +132,6 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String pageTitle = "Register Page";
-        req.setAttribute("title", pageTitle);
         resp.sendRedirect("/user");
     }
 
@@ -155,15 +152,12 @@ public class UserServlet extends HttpServlet {
                 } else if ("Customer".equals(accountType)) {
                     resp.sendRedirect(req.getContextPath() + "/dashboard1.jsp");
                 } else {
-                    // Redirect to a default page if the account type is unrecognized
                     resp.sendRedirect(req.getContextPath() + "/dashboard2.jsp");
                 }
             } else {
-                // Redirect back to the login page with an error message
                 resp.sendRedirect("/login.jsp?error=Invalid email or password");
             }
         } catch (Exception e) {
-            // Log the error and provide a generic error message
             e.printStackTrace();
             resp.sendRedirect("/login.jsp?error=Something went wrong, please try again.");
         }
@@ -177,23 +171,24 @@ public class UserServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
                 return;
             }
-            // Only update fields that are present in the request
-            if (req.getParameter("firstName") != null) user.setFirstName(req.getParameter("firstName"));
-            if (req.getParameter("lastName") != null) user.setLastName(req.getParameter("lastName"));
-            if (req.getParameter("email") != null) user.setEmail(req.getParameter("email"));
-            if (req.getParameter("password") != null) user.setPassword(req.getParameter("password"));
-            if (req.getParameter("address") != null) user.setAddress(req.getParameter("address"));
-            if (req.getParameter("phoneNumber") != null) user.setPhoneNumber(req.getParameter("phoneNumber"));
-            if (req.getParameter("accountType") != null) user.setAccountType(req.getParameter("accountType"));
+
+            user.setFirstName(req.getParameter("firstName"));
+            user.setLastName(req.getParameter("lastName"));
+            user.setEmail(req.getParameter("email"));
+            user.setPhoneNumber(req.getParameter("phoneNumber"));
+            user.setAddress(req.getParameter("address"));
+            user.setAccountType(req.getParameter("accountType"));
+
             if (user instanceof Admin) {
                 ((Admin) user).setNIC(req.getParameter("nic"));
             } else if (user instanceof Staff) {
                 ((Staff) user).setNIC(req.getParameter("nic"));
                 ((Staff) user).setPosition(req.getParameter("position"));
             }
+
             UserDao.updateUser(user);
 
-            resp.getWriter().println("User updated successfully: " + user.getEmail());
+            resp.sendRedirect(req.getContextPath() + "/user");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while updating the user.");
@@ -220,9 +215,11 @@ public class UserServlet extends HttpServlet {
             int userId = Integer.parseInt(req.getParameter("id"));
             User user = UserDao.getUserById(userId);
             if (user != null) {
-                req.setAttribute("user", user);
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/userDetails.jsp");
-                dispatcher.forward(req, resp);
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(user);
+                resp.getWriter().write(jsonResponse);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
             }
@@ -232,22 +229,9 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-//    private void getUserList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//        try {
-//            List<User> userList = UserDao.getUserList();
-//            req.setAttribute("userList", userList);
-//            RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/manageUsers.jsp");
-//            dispatcher.forward(req, resp);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the user list.");
-//        }
-//    }
-
-//
     private void getUserList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
-            // Get pagination parameters from request, defaulting to page 1 and 10 users per page
+            // Get pagination parameters
             int page = 1;
             int size = 10;
 
@@ -262,12 +246,10 @@ public class UserServlet extends HttpServlet {
             String search = req.getParameter("search");
             String filterUserType = req.getParameter("filterUserType");
 
-            // Get the list of users for the current page based on search and filter criteria
             List<User> userList = UserDao.getUserList(search, filterUserType, page, size);
             int totalUsers = UserDao.getUserCount(search, filterUserType);
             int totalPages = (int) Math.ceil((double) totalUsers / size);
 
-            // Set attributes to be used in the JSP
             req.setAttribute("userList", userList);
             req.setAttribute("currentPage", page);
             req.setAttribute("totalPages", totalPages);
@@ -275,7 +257,8 @@ public class UserServlet extends HttpServlet {
             req.setAttribute("search", search);
             req.setAttribute("filterUserType", filterUserType);
 
-            // Forward the request to the JSP page
+            String pageTitle = "Manage Users";
+            req.setAttribute("title", pageTitle);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/manageUsers.jsp");
             dispatcher.forward(req, resp);
         } catch (Exception e) {

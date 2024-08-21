@@ -106,41 +106,6 @@ public class UserDao {
         }
     }
 
-//    // Method to get the list of all users
-//    public static List<User> getUserList(int page, int size) throws ClassNotFoundException {
-//        try {
-//            int offset = (page - 1) * size;
-//            String sql = "SELECT * FROM users LIMIT ? OFFSET ?";
-//            ResultSet resultSet = CrudUtil.execute(sql, size, offset);
-//            List<User> userList = new ArrayList<>();
-//            while (resultSet.next()) {
-//                User user = new User();
-//                user.setId(resultSet.getInt("id"));
-//                user.setFirstName(resultSet.getString("firstName"));
-//                user.setLastName(resultSet.getString("lastName"));
-//                user.setEmail(resultSet.getString("email"));
-//                user.setPassword(resultSet.getString("password"));
-//                user.setAddress(resultSet.getString("address"));
-//                user.setPhoneNumber(resultSet.getString("phoneNumber"));
-//                user.setAccountType(resultSet.getString("accountType"));
-//                user.setStatus(resultSet.getString("status"));
-//                userList.add(user);
-//            }
-//            return userList;
-//        } catch (SQLException | ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//    //method to get user count
-//    public static int getUserCount() throws ClassNotFoundException, SQLException {
-//        String sql = "SELECT COUNT(*) FROM users";
-//        ResultSet resultSet = CrudUtil.execute(sql);
-//        if (resultSet.next()) {
-//            return resultSet.getInt(1);
-//        }
-//        return 0;
-//    }
-
     // Method to get the list of users
     public static List<User> getUserList(String search, String filterUserType, int page, int size) throws ClassNotFoundException {
         try {
@@ -183,6 +148,7 @@ public class UserDao {
                 user.setEmail(resultSet.getString("email"));
                 user.setPhoneNumber(resultSet.getString("phoneNumber"));
                 user.setAccountType(resultSet.getString("accountType"));
+                user.setStatus(resultSet.getString("status"));
                 userList.add(user);
             }
             return userList;
