@@ -11,14 +11,14 @@
 <footer class="py-4 bg-light mt-auto">
   <div class="container-fluid px-4">
     <div class="d-flex align-items-center justify-content-center small">
-      <div class="text-muted">Copyright &copy; 2023</div>
+      <div class="text-muted">Copyright &copy; 2024</div>
     </div>
   </div>
 </footer>
 </div>
 </div>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script crossorigin="anonymous" src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <script><%@include file="../assets/js/sidebar.js"%></script>
 </body>
 </html>

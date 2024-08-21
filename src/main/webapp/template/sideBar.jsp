@@ -45,9 +45,13 @@
                         <div class="nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/user">
                         <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
                         Users
+                    </a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/restaurant/">
+                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        Restaurants
                     </a>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseGallery" aria-expanded="false" aria-controls="collapseGallery">
                         <div class="nav-link-icon"><i class="fa-regular fa-image"></i></div>
@@ -56,11 +60,11 @@
                     </a>
                     <div class="collapse" id="collapseGallery" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="#">Gallery</a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/gallery">Gallery</a>
                             <a class="nav-link" href="#">New Gallery</a>
                         </nav>
                     </div>
-                    <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#collapseServices" aria-expanded="false" aria-controls="collapseServices">
+                    <a class="nav-link collapsed " href="${pageContext.request.contextPath}/gallery" data-bs-toggle="collapse" data-bs-target="#collapseServices" aria-expanded="false" aria-controls="collapseServices">
                         <div class="nav-link-icon"><i class="fas fa-columns"></i></div>
                         Services
                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
