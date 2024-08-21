@@ -10,4 +10,7 @@ public class Offer {
     private String offerName;
     private String promoCode;
     private double discountPercentage;
+    private String category;
+    private String imagePath;
+    private String status;
 }
