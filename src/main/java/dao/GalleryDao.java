@@ -84,7 +84,6 @@ public class GalleryDao {
                 String searchParam = "%" + search + "%";
                 params.add(searchParam);
                 params.add(searchParam);
-                params.add(searchParam);
             }
 
             if (filterGalleryType != null && !filterGalleryType.isEmpty()) {
@@ -129,7 +128,6 @@ public class GalleryDao {
 
         if (search != null && !search.isEmpty()) {
             String searchParam = "%" + search + "%";
-            params.add(searchParam);
             params.add(searchParam);
             params.add(searchParam);
         }

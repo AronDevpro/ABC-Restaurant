@@ -87,7 +87,6 @@ public class FacilityDao {
                 String searchParam = "%" + search + "%";
                 params.add(searchParam);
                 params.add(searchParam);
-                params.add(searchParam);
             }
 
             if (filterFacilityType != null && !filterFacilityType.isEmpty()) {
@@ -133,7 +132,6 @@ public class FacilityDao {
 
         if (search != null && !search.isEmpty()) {
             String searchParam = "%" + search + "%";
-            params.add(searchParam);
             params.add(searchParam);
             params.add(searchParam);
         }
