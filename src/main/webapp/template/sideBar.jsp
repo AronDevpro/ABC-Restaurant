@@ -45,7 +45,7 @@
                         <div class="nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    <a class="nav-link" href="${pageContext.request.contextPath}/user">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users/">
                         <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
                         Users
                     </a>
@@ -53,21 +53,21 @@
                         <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
                         Restaurants
                     </a>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseGallery" aria-expanded="false" aria-controls="collapseGallery">
-                        <div class="nav-link-icon"><i class="fa-regular fa-image"></i></div>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/galleries/">
+                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
                         Gallery
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse" id="collapseGallery" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/gallery">Gallery</a>
-                            <a class="nav-link" href="#">New Gallery</a>
-                        </nav>
-                    </div>
-                    <a class="nav-link collapsed " href="${pageContext.request.contextPath}/gallery" data-bs-toggle="collapse" data-bs-target="#collapseServices" aria-expanded="false" aria-controls="collapseServices">
-                        <div class="nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Services
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/facilities/">
+                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        Facility
+                    </a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/offers/">
+                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        Offer
+                    </a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/products/">
+                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        Products
                     </a>
                     <div class="collapse" id="collapseServices" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sidenav-menu-nested nav">
