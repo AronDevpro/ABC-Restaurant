@@ -222,20 +222,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Fetch restaurant names for each facility
         document.querySelectorAll('td[id^="restaurantName-"]').forEach(function(td) {
             const facilityId = td.id.split('-')[1];
-            console.log(facilityId)
             fetchRestaurantName(facilityId, td);
         });
 
-        // Fetch restaurant name by facility ID and update the corresponding table cell
         function fetchRestaurantName(facilityId, tdElement) {
             fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + facilityId)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
-                    // Assuming the response contains a restaurant object with a 'name' property
                     tdElement.textContent = data.name;
                 })
                 .catch(error => {
