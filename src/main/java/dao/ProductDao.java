@@ -81,9 +81,9 @@ public class ProductDao {
             sql.append(" LIMIT ? OFFSET ?");
 
             List<Object> params = new ArrayList<>();
+
             if (search != null && !search.isEmpty()) {
                 String searchParam = "%" + search + "%";
-                params.add(searchParam);
                 params.add(searchParam);
                 params.add(searchParam);
             }
@@ -131,7 +131,6 @@ public class ProductDao {
 
         if (search != null && !search.isEmpty()) {
             String searchParam = "%" + search + "%";
-            params.add(searchParam);
             params.add(searchParam);
             params.add(searchParam);
         }
