@@ -66,28 +66,6 @@ CREATE TABLE IF NOT EXISTS reservations (
     FOREIGN KEY (restaurantId) REFERENCES restaurant(id)
     );
 
--- Orders table
-CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE,
-    time TIME,
-    totalAmount DECIMAL(10, 2),
-    customerId INT,
-    restaurantId INT,
-    FOREIGN KEY (customerId) REFERENCES users(id),
-    FOREIGN KEY (restaurantId) REFERENCES restaurant(id)
-    );
-
--- Order Items junction table
-CREATE TABLE IF NOT EXISTS order_items (
-    orderId INT,
-    menuItemId INT,
-    quantity INT,
-    FOREIGN KEY (orderId) REFERENCES orders(id),
-    FOREIGN KEY (menuItemId) REFERENCES menuItems(id),
-    PRIMARY KEY (orderId, menuItemId)
-    );
-
 -- Queries table
 CREATE TABLE IF NOT EXISTS queries (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -149,4 +127,37 @@ CREATE TABLE IF NOT EXISTS Products (
     status VARCHAR(15) DEFAULT('active'),
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+-- Orders table
+CREATE TABLE IF NOT EXISTS Orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    orderUUID CHAR(36) PRIMARY KEY,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phoneNumber VARCHAR(100) NOT NULL,
+    deliverDate DATE NOT NULL,
+    deliverTime TIME NOT NULL,
+    deliveryMethod VARCHAR(30) NOT NULL,
+    restaurantSelect VARCHAR(100) NULL,
+    streetAddress VARCHAR(150) NULL,
+    zip VARCHAR(50) NULL,
+    city VARCHAR(50) NULL,
+    paymentMethod VARCHAR(255) NULL,
+    total DECIMAL(10, 2),
+    customerId INT,
+    status VARCHAR(15) DEFAULT('pending'),
+    CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customerId) REFERENCES users(id)
+    );
+
+-- Order Items table
+CREATE TABLE IF NOT EXISTS orderItems (
+    orderId INT,
+    item VARCHAR(50),
+    quantity INT,
+    FOREIGN KEY (orderId) REFERENCES orders(id),
+    PRIMARY KEY (orderId, item)
     );
