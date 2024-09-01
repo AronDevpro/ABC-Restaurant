@@ -72,7 +72,7 @@
                                data-bs-target="#updateModel">
                       Edit
                       </button>  |
-                      <a href="user/delete?id=${user.id}" class="btn btn-danger">Delete</a>
+                      <a href="/admin/users/delete?id=${user.id}" class="btn btn-danger">Delete</a>
                     </td>
                   </tr>
                 </c:forEach>
@@ -111,44 +111,44 @@
 <div class="modal fade" id="updateModel" tabindex="-1" aria-labelledby="updateModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="${pageContext.request.contextPath}/user/update" method="POST">
+      <form action="${pageContext.request.contextPath}/admin/users/update" method="POST">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">User Details</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <input type="hidden" name="id">
-          <div class="mb-3">
-            <label class="form-label">First Name</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" name="firstName">
+            <label for="firstName">First Name</label>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Last Name</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" name="lastName">
+            <label for="lastName">Last Name</label>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" name="email">
+            <label for="email">Email</label>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Phone Number</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" name="phoneNumber">
+            <label for="phoneNumber">Phone Number</label>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Address</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" name="address">
+            <label for="address">Address</label>
           </div>
-          <div class="mb-3" id="updateNicField" style="display: none">
-            <label class="form-label">NIC</label>
+          <div class="form-floating mb-3" id="updateNicField" style="display: none">
             <input type="text" class="form-control" name="nic">
+            <label for="nic">NIC</label>
           </div>
-          <div class="mb-3" id="updatePositionField" style="display: none">
-            <label class="form-label">Position</label>
+          <div class="form-floating mb-3" id="updatePositionField" style="display: none">
             <input type="text" class="form-control" name="position">
+            <label for="position">Position</label>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Account Type</label>
+          <div class="form-floating mb-3">
             <input readonly type="text" class="form-control" name="accountType" id="updateAccountType">
+            <label for="accountType">Account Type</label>
           </div>
       </div>
       <div class="modal-footer">
@@ -164,7 +164,7 @@
 <div class="modal fade" id="addUserModel" tabindex="-1" aria-labelledby="addUserModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<%= request.getContextPath()%>/user/create" method="POST">
+      <form action="<%= request.getContextPath()%>/admin/users/create" method="POST">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="addUserModelLabel">Create User</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -281,7 +281,7 @@
       button.addEventListener('click', function () {
         const userId = this.getAttribute('data-user-id');
 
-        fetch('<%= request.getContextPath() %>/user/view?id=' + userId)
+        fetch('<%= request.getContextPath() %>/admin/users/view?id=' + userId)
                 .then(response => response.json())
                 .then(data => {
                   updateModel.querySelector('input[name="id"]').value = data.id;
