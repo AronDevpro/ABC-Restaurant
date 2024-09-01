@@ -17,35 +17,30 @@ import model.User;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/")
-public class UserServlet extends HttpServlet {
+@WebServlet("/admin/users/*")
+public class UserController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String servletPath = req.getServletPath();
-        System.out.println(servletPath);
-
-        if (servletPath == null) {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action parameter is missing.");
             return;
         }
 
-        switch (servletPath) {
-            case "/user/customer":
+        switch (pathInfo) {
+            case "/customer":
                 registerCustomer(req, resp);
                 break;
-            case "/user/create":
+            case "/create":
                 registerUser(req, resp);
                 break;
             case "/user/login":
                 loginUser(req, resp);
                 break;
-            case "/user/update":
+            case "/update":
                 updateUser(req, resp);
-                break;
-            case "/user":
-                getUserList(req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
@@ -55,22 +50,20 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String servletPath = req.getServletPath();
-        System.out.println(servletPath);
-
-        if (servletPath == null) {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action parameter is missing.");
             return;
         }
 
-        switch (servletPath) {
-            case "/user":
+        switch (pathInfo) {
+            case "/":
                 getUserList(req, resp);
                 break;
-            case "/user/view":
+            case "/view":
                 getUserById(req, resp);
                 break;
-            case "/user/delete":
+            case "/delete":
                 deleteUser(req, resp);
                 break;
             default:
@@ -132,7 +125,7 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        resp.sendRedirect("/user");
+        resp.sendRedirect("/admin/users/");
     }
 
     private void loginUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -188,7 +181,7 @@ public class UserServlet extends HttpServlet {
 
             UserDao.updateUser(user);
 
-            resp.sendRedirect(req.getContextPath() + "/user");
+            resp.sendRedirect(req.getContextPath() + "/admin/users/");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while updating the user.");
@@ -200,7 +193,7 @@ public class UserServlet extends HttpServlet {
             int userId = Integer.parseInt(req.getParameter("id"));
             boolean success = UserDao.deleteUser(userId);
             if (success) {
-                resp.sendRedirect(req.getContextPath() + "/user");
+                resp.sendRedirect(req.getContextPath() + "/admin/users/");
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
             }
