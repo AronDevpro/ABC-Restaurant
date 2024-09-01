@@ -11,26 +11,22 @@
 <%@ include file = "template/header.jsp"%>
 <body>
 <%
-    // Check if a session exists and if there is a "user" attribute in it
-    session = request.getSession(false); // false means don't create a new session if one doesn't exist
+    session = request.getSession(false);
     if (session != null && session.getAttribute("user") != null) {
         User user = (User) session.getAttribute("user");
         String accountType = user.getAccountType();
-
-        // Redirect based on the account type
         if ("Admin".equals(accountType)) {
             response.sendRedirect(request.getContextPath() + "/dashboard3.jsp");
         } else if ("Customer".equals(accountType)) {
             response.sendRedirect(request.getContextPath() + "/dashboard1.jsp");
         } else {
-            // Redirect to a default page or handle unknown account types
             response.sendRedirect(request.getContextPath() + "/dashboard2.jsp");
         }
-        return; // Prevent further execution of the page
+        return;
     }
 %>
 <%@ include file = "template/topNav.jsp"%>
-<form action="<%= request.getContextPath()%>/user/login" method="POST">
+<form action="<%= request.getContextPath()%>/login" method="POST">
     <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input type="text" class="form-control" id="email" name="email">
