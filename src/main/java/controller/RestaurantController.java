@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/admin/restaurant/*")
-public class RestaurantServlet extends HttpServlet {
+public class RestaurantController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
