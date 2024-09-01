@@ -85,7 +85,6 @@ public class OfferDao {
                 String searchParam = "%" + search + "%";
                 params.add(searchParam);
                 params.add(searchParam);
-                params.add(searchParam);
             }
 
             if (filterOfferType != null && !filterOfferType.isEmpty()) {
@@ -131,7 +130,6 @@ public class OfferDao {
 
         if (search != null && !search.isEmpty()) {
             String searchParam = "%" + search + "%";
-            params.add(searchParam);
             params.add(searchParam);
             params.add(searchParam);
         }
