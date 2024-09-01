@@ -83,7 +83,6 @@ public class RestaurantDao {
                 String searchParam = "%" + search + "%";
                 params.add(searchParam);
                 params.add(searchParam);
-                params.add(searchParam);
             }
 
             params.add(size);
@@ -121,7 +120,6 @@ public class RestaurantDao {
 
         if (search != null && !search.isEmpty()) {
             String searchParam = "%" + search + "%";
-            params.add(searchParam);
             params.add(searchParam);
             params.add(searchParam);
         }

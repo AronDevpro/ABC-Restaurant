@@ -235,7 +235,7 @@
                   updateModel.querySelector('select[name="status"]').value = data.status;
 
                   // Set current image source if available
-                  const imageUrl = data.imagePath ? '<%= request.getContextPath() %>/assets' + data.imagePath.replace(/\\/g, '/') : ''; // Convert backslashes to forward slashes
+                  const imageUrl = data.imagePath ? '<%= request.getContextPath() %>/assets' + data.imagePath.replace(/\\/g, '/') : '';
                   const currentImage = updateModel.querySelector('#currentImage');
                   if (imageUrl) {
                     currentImage.src = imageUrl;
