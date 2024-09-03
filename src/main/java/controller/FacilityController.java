@@ -77,7 +77,7 @@ public class FacilityController extends HttpServlet {
     private void createFacility(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Part filePart = req.getPart("image");
         String fileName = filePart.getSubmittedFileName();
-        String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads";
+        String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads\\facility";
         File uploadDir = new File(externalUploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
@@ -85,7 +85,7 @@ public class FacilityController extends HttpServlet {
 
         String filePath = externalUploadPath + File.separator + fileName;
         filePart.write(filePath);
-        String relativePath = "/uploads/" + fileName;
+        String relativePath = "/uploads/facility/" + fileName;
         Facility facility = new Facility();
         facility.setRestaurantId(Integer.parseInt(req.getParameter("restaurantId")));
         facility.setName(req.getParameter("name"));
@@ -118,7 +118,7 @@ public class FacilityController extends HttpServlet {
             System.out.println(filePart);
             if (filePart != null && filePart.getSize() > 0) {
                 String fileName = filePart.getSubmittedFileName();
-                String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads";
+                String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads\\facility";
                 File uploadDir = new File(externalUploadPath);
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs();
@@ -126,7 +126,7 @@ public class FacilityController extends HttpServlet {
 
                 String filePath = externalUploadPath + File.separator + fileName;
                 filePart.write(filePath);
-                relativePath = "/uploads/" + fileName;
+                relativePath = "/uploads/facility" + fileName;
             }
             System.out.println(relativePath);
 
