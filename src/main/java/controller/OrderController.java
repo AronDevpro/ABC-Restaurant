@@ -110,7 +110,10 @@ public class OrderController extends HttpServlet {
             for (Map.Entry<String, Cart> entry : cartItems.entrySet()) {
                 String item = entry.getValue().getName();
                 int quantity = entry.getValue().getQuantity();
-                OrderItems orderItem = new OrderItems(orderId, item, quantity);
+                OrderItems orderItem = new OrderItems();
+                orderItem.setOrderId(orderId);
+                orderItem.setItem(item);
+                orderItem.setQuantity(quantity);
                 OrderDao.addOrderItems(orderItem);
             }
 

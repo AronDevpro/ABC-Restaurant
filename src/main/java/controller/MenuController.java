@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/products/*")
-public class HomeProductController extends HttpServlet {
+@WebServlet("/menu/*")
+public class MenuController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
