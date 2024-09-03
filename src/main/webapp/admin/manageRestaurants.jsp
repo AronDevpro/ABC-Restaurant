@@ -99,7 +99,7 @@
 <div class="modal fade" id="updateModel" tabindex="-1" aria-labelledby="updateModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="${pageContext.request.contextPath}/admin/restaurant/update" method="POST">
+      <form action="${pageContext.request.contextPath}/admin/restaurant/update" method="POST" enctype="multipart/form-data">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Restaurant Details</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -130,6 +130,19 @@
             <input type="text" class="form-control" placeholder="Enter Phone Number" name="phoneNumber">
             <label for="phoneNumber">Phone Number</label>
           </div>
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" placeholder="Enter Capacity" name="capacity">
+            <label for="capacity">Capacity</label>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (optional)</label>
+            <input type="file" class="form-control" name="image" accept="image/*">
+          </div>
+          <div class="mb-3">
+            <label for="currentImage" class="form-label">Current Image</label>
+            <br>
+            <img id="currentImage" src="" alt="Current Image" style="max-width: 100%; height: auto;">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Update changes</button>
@@ -144,9 +157,9 @@
 <div class="modal fade" id="addUserModel" tabindex="-1" aria-labelledby="addUserModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<%= request.getContextPath()%>/admin/restaurant/create" method="POST">
+      <form action="<%= request.getContextPath()%>/admin/restaurant/create" method="POST" enctype="multipart/form-data">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addUserModelLabel">Create User</h1>
+          <h1 class="modal-title fs-5" id="addUserModelLabel">Add Restaurant</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -160,11 +173,11 @@
           </div>
           <div class="form-floating mb-3">
             <input type="time" class="form-control" id="openTime" placeholder="Enter Open Time" name="openTime">
-            <label for="openTime">Email</label>
+            <label for="openTime">Open Time</label>
           </div>
           <div class="form-floating mb-3">
             <input type="time" class="form-control" id="closeTime" placeholder="Enter Close Time" name="closeTime">
-            <label for="closeTime">Password</label>
+            <label for="closeTime">Close Time</label>
           </div>
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address">
@@ -173,6 +186,14 @@
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" name="phoneNumber">
             <label for="phoneNumber">Phone Number</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="capacity" placeholder="Enter Capacity" name="capacity">
+            <label for="capacity">Capacity</label>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -213,6 +234,17 @@
                   updateModel.querySelector('input[name="closeTime"]').value = data.closeTime;
                   updateModel.querySelector('input[name="address"]').value = data.address || '';
                   updateModel.querySelector('input[name="phoneNumber"]').value = data.phoneNumber || '';
+                  updateModel.querySelector('input[name="capacity"]').value = data.capacity || '';
+
+                  // Set current image source if available
+                  const imageUrl = data.image ? '<%= request.getContextPath() %>/assets' + data.image.replace(/\\/g, '/') : '';
+                  const currentImage = updateModel.querySelector('#currentImage');
+                  if (imageUrl) {
+                    currentImage.src = imageUrl;
+                    currentImage.style.display = 'block';
+                  } else {
+                    currentImage.style.display = 'none';
+                  }
 
                   updateModelInstance.show();
                 })
