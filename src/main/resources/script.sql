@@ -10,13 +10,14 @@ CREATE TABLE IF NOT EXISTS restaurant (
     closeTime VARCHAR(100),
     address VARCHAR(100),
     phoneNumber VARCHAR(20),
+    capacity INT,
     images VARCHAR(255),
     status VARCHAR(15) DEFAULT('active'),
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
--- Users table with authentication fields
+-- Users table
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(50),
@@ -33,13 +34,6 @@ CREATE TABLE IF NOT EXISTS users (
     accountType ENUM('Admin', 'Staff', 'Customer')
     );
 
--- Menu items table
-CREATE TABLE IF NOT EXISTS menuItems (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    itemName VARCHAR(50),
-    price DECIMAL(10, 2)
-    );
-
 -- Offers table
 CREATE TABLE IF NOT EXISTS offers (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -53,30 +47,21 @@ CREATE TABLE IF NOT EXISTS offers (
     UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     );
 
--- Reservations table
-CREATE TABLE IF NOT EXISTS reservations (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    offerId INT,
-    date DATE,
-    time TIME,
-    customerId INT,
-    restaurantId INT,
-    FOREIGN KEY (offerId) REFERENCES offers(id),
-    FOREIGN KEY (customerId) REFERENCES users(id),
-    FOREIGN KEY (restaurantId) REFERENCES restaurant(id)
-    );
-
 -- Queries table
-CREATE TABLE IF NOT EXISTS queries (
+CREATE TABLE IF NOT EXISTS Queries (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(50),
-    description TEXT,
-    response TEXT,
-    customerId INT,
-    status ENUM('Open', 'Closed', 'Pending'),
+    subject VARCHAR(50) NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL,
+    orderId VARCHAR(100) NULL,
+    description TEXT NOT NULL,
+    response TEXT NULL,
+    customerId INT NOT NULL,
+    staffId INT NULL,
+    status ENUM('Answered', 'Closed', 'Pending') DEFAULT('Pending'),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (customerId) REFERENCES users(id)
+    FOREIGN KEY (customerId) REFERENCES users(id),
+    FOREIGN KEY (staffId) REFERENCES users(id)
     );
 
 -- Payments table
@@ -132,7 +117,7 @@ CREATE TABLE IF NOT EXISTS Products (
 -- Orders table
 CREATE TABLE IF NOT EXISTS Orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    orderUUID CHAR(36) PRIMARY KEY,
+    orderUUID CHAR(36) NOT NULL,
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
@@ -161,3 +146,64 @@ CREATE TABLE IF NOT EXISTS orderItems (
     FOREIGN KEY (orderId) REFERENCES orders(id),
     PRIMARY KEY (orderId, item)
     );
+
+--  Reservation table
+CREATE TABLE IF NOT EXISTS reservation (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reservationId CHAR(36),
+    customerId INT NOT NULL,
+    restaurantId INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL,
+    date VARCHAR(20) NOT NULL,
+    time VARCHAR(20) NOT NULL,
+    noOfPeople INT NULL,
+    status VARCHAR(30) DEFAULT('pending'),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (restaurantId) REFERENCES restaurant(id),
+    FOREIGN KEY (customerId) REFERENCES users(id)
+    );
+
+-- store procedure for check availability
+DELIMITER //
+
+CREATE PROCEDURE check_availability(
+    IN p_restaurantId INT,
+    IN p_date DATE,
+    IN p_time TIME,
+    OUT p_result INT,
+    OUT p_message VARCHAR(255)
+)
+BEGIN
+    DECLARE v_openTime TIME;
+    DECLARE v_closeTime TIME;
+    DECLARE v_capacity INT;
+    DECLARE v_reservationCount INT;
+
+SELECT openTime, closeTime, capacity INTO v_openTime, v_closeTime, v_capacity
+FROM restaurant
+WHERE id = p_restaurantId;
+
+-- Check if the requested time is within operating hours
+IF p_time < v_openTime OR p_time > v_closeTime THEN
+        SET p_result = 0;
+        SET p_message = 'The restaurant is closed during the selected time.';
+ELSE
+-- Check the number of reservations for the given date and time
+SELECT COUNT(*) INTO v_reservationCount
+FROM reservation
+WHERE restaurantId = p_restaurantId
+  AND date = p_date;
+
+IF v_reservationCount >= v_capacity THEN
+SET p_result = 0;
+SET p_message = 'The restaurant is fully booked for the selected date.';
+ELSE
+SET p_result = 1;
+SET p_message = 'The selected time is available for reservation.';
+END IF;
+END IF;
+END //
+
+DELIMITER ;

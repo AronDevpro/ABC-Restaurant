@@ -9,12 +9,13 @@ import java.sql.Timestamp;
 @Setter
 public class Query {
     private int id;
-    private String title;
+    private String subject;
     private String description;
+    private String phoneNumber;
+    private String orderId;
     private String response;
     private int customerId;
-    private int employeeId;
+    private int staffId;
     private String status;
-    private Timestamp createdAt;
     private Timestamp updatedAt;
 }
