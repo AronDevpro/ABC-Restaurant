@@ -4,16 +4,24 @@ import com.google.gson.Gson;
 import dao.RestaurantDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.Restaurant;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/admin/restaurant/*")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10,      // 10MB
+        maxRequestSize = 1024 * 1024 * 50    // 50MB
+)
 public class RestaurantController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -67,6 +75,17 @@ public class RestaurantController extends HttpServlet {
     }
 
     private void createRestaurant(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Part filePart = req.getPart("image");
+        String fileName = filePart.getSubmittedFileName();
+        String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads\\restaurants";
+        File uploadDir = new File(externalUploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        String filePath = externalUploadPath + File.separator + fileName;
+        filePart.write(filePath);
+        String relativePath = "/uploads/restaurants/" + fileName;
         Restaurant restaurant = new Restaurant();
         restaurant.setName(req.getParameter("name"));
         restaurant.setDescription(req.getParameter("description"));
@@ -74,6 +93,8 @@ public class RestaurantController extends HttpServlet {
         restaurant.setCloseTime(req.getParameter("closeTime"));
         restaurant.setAddress(req.getParameter("address"));
         restaurant.setPhoneNumber(req.getParameter("phoneNumber"));
+        restaurant.setImage(relativePath);
+        restaurant.setCapacity(Integer.parseInt(req.getParameter("capacity")));
 
         try {
             RestaurantDao.createRestaurant(restaurant);
@@ -92,6 +113,23 @@ public class RestaurantController extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
                 return;
             }
+            String relativePath = restaurant.getImage();
+            System.out.println(relativePath);
+
+            Part filePart = req.getPart("image");
+            System.out.println(filePart);
+            if (filePart != null && filePart.getSize() > 0) {
+                String fileName = filePart.getSubmittedFileName();
+                String externalUploadPath = "D:\\workspace\\ABC-Restaurant\\src\\main\\webapp\\assets\\uploads\\restaurants";
+                File uploadDir = new File(externalUploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+
+                String filePath = externalUploadPath + File.separator + fileName;
+                filePart.write(filePath);
+                relativePath = "/uploads/restaurants/" + fileName;
+            }
 
             restaurant.setName(req.getParameter("name"));
             restaurant.setDescription(req.getParameter("description"));
@@ -99,7 +137,8 @@ public class RestaurantController extends HttpServlet {
             restaurant.setCloseTime(req.getParameter("closeTime"));
             restaurant.setAddress(req.getParameter("address"));
             restaurant.setPhoneNumber(req.getParameter("phoneNumber"));
-            restaurant.setImage("sss");
+            restaurant.setCapacity(Integer.parseInt(req.getParameter("capacity")));
+            restaurant.setImage(relativePath);
 
             RestaurantDao.updateRestaurant(restaurant);
 

@@ -11,8 +11,8 @@ import java.util.List;
 public class RestaurantDao {
     public static void createRestaurant(Restaurant restaurant) throws ClassNotFoundException {
         try {
-            String sql = "INSERT INTO restaurant (id, name, description, openTime, closeTime, address, phoneNumber, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            CrudUtil.execute(sql, restaurant.getId(), restaurant.getName(), restaurant.getDescription(), restaurant.getOpenTime(), restaurant.getCloseTime(), restaurant.getAddress(), restaurant.getPhoneNumber(), restaurant.getImage());
+            String sql = "INSERT INTO restaurant (id, name, description, openTime, closeTime, address, phoneNumber, image, capacity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            CrudUtil.execute(sql, restaurant.getId(), restaurant.getName(), restaurant.getDescription(), restaurant.getOpenTime(), restaurant.getCloseTime(), restaurant.getAddress(), restaurant.getPhoneNumber(), restaurant.getImage(), restaurant.getCapacity());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -21,8 +21,8 @@ public class RestaurantDao {
     // Method to update a restaurant
     public static void updateRestaurant(Restaurant restaurant) throws ClassNotFoundException {
         try {
-            String sql = "UPDATE restaurant SET name = ?, description = ?, openTime = ?, closeTime = ?, address = ?, phoneNumber = ?, image = ? WHERE id = ?";
-            CrudUtil.execute(sql, restaurant.getName(), restaurant.getDescription(), restaurant.getOpenTime(), restaurant.getCloseTime(), restaurant.getAddress(), restaurant.getPhoneNumber(), restaurant.getImage(), restaurant.getId());
+            String sql = "UPDATE restaurant SET name = ?, description = ?, openTime = ?, closeTime = ?, address = ?, phoneNumber = ?, image = ?, capacity = ? WHERE id = ?";
+            CrudUtil.execute(sql, restaurant.getName(), restaurant.getDescription(), restaurant.getOpenTime(), restaurant.getCloseTime(), restaurant.getAddress(), restaurant.getPhoneNumber(), restaurant.getImage(), restaurant.getCapacity(), restaurant.getId());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -56,6 +56,7 @@ public class RestaurantDao {
                 restaurant.setPhoneNumber(resultSet.getString("phoneNumber"));
                 restaurant.setStatus(resultSet.getString("status"));
                 restaurant.setImage(resultSet.getString("image"));
+                restaurant.setCapacity(resultSet.getInt("capacity"));
 
                 return restaurant;
             } else {
@@ -99,6 +100,7 @@ public class RestaurantDao {
                 restaurant.setCloseTime(resultSet.getString("closeTime"));
                 restaurant.setAddress(resultSet.getString("address"));
                 restaurant.setPhoneNumber(resultSet.getString("phoneNumber"));
+                restaurant.setCapacity(resultSet.getInt("capacity"));
                 restaurant.setStatus(resultSet.getString("status"));
                 list.add(restaurant);
             }

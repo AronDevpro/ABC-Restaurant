@@ -14,6 +14,7 @@ public class Restaurant {
     private String address;
     private String phoneNumber;
     private String image;
+    private int capacity;
     private String status;
     private String createdAt;
     private String updatedAt;
