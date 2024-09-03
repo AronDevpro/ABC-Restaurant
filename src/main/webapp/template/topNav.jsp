@@ -17,10 +17,10 @@
                     <a class="nav-link active navMod" aria-current="page" href="/">HOME</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link navMod" href="#">DINNING</a>
+                    <a class="nav-link navMod" href="/menu/">MENU</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link navMod" href="#">FACILITIES</a>
+                    <a class="nav-link navMod" href="/facility">FACILITIES</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link navMod" href="/offers">SPECIAL OFFERS</a>
