@@ -41,7 +41,7 @@ function addToCart(productId, name, price) {
 // dropdown
 function updateCartDropdown() {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "/products/cart", true);
+    xhr.open("GET", "/menu/cart", true);
     xhr.onload = function () {
         if (xhr.status === 200) {
             const cartItems = JSON.parse(xhr.responseText);
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", updateCartDropdown);
 // remove from cart
 function removeFromCart(productId) {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/products/removeFromCart", true);
+    xhr.open("POST", "/menu/removeFromCart", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
