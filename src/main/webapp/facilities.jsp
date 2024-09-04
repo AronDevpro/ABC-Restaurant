@@ -5,8 +5,8 @@
 <body>
 <%@ include file="template/topNav.jsp"%>
 <div class="container">
-    <h1 style="font-size: 80px">Special Offers</h1>
-    <p>Take advantage of our list of special offers and hotel deals in Colombo to make your visit more memorable. Enjoy our ongoing offers to avail the best deals during your stay.</p>
+    <h1 class="title title-second"><span class="title-first">OUR</span> FACILITIES</h1>
+    <h3 class="sub-title">Discover the Heart of Hospitality</h3>
     <div class="col-12">
         <div class="mb-3">
             <form method="GET" action="" id="searchForm">
@@ -26,16 +26,16 @@
                                 </div>
                                 <div class="col-4 d-flex align-items-center">
                                     <div class="px-3 ">
-                                        <h4 class="my-3 mb-1">${facility.name}</h4>
-                                        <p class="mb-3">${facility.description}</p>
+                                        <h4 class="my-3 mb-1 sub-title">${facility.name}</h4>
+                                        <p class="mb-3" style="font-size: 22px">${facility.description}</p>
                                     </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="col-4 d-flex align-items-center">
                                     <div class="px-3 ">
-                                        <h4 class="my-3 mb-1">${facility.name}</h4>
-                                        <p class="mb-3">${facility.description}</p>
+                                        <h4 class="my-3 mb-1 sub-title">${facility.name}</h4>
+                                        <p class="mb-3" style="font-size: 22px">${facility.description}</p>
                                     </div>
                                 </div>
                                 <div class="col-8">
