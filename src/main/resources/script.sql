@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS restaurant (
     address VARCHAR(100),
     phoneNumber VARCHAR(20),
     capacity INT,
-    images VARCHAR(255),
+    image VARCHAR(255),
     status VARCHAR(15) DEFAULT('active'),
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS offers (
     imagePath VARCHAR(255) NULL,
     status VARCHAR(15) DEFAULT('active'),
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
 -- Queries table
@@ -62,17 +62,6 @@ CREATE TABLE IF NOT EXISTS Queries (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (customerId) REFERENCES users(id),
     FOREIGN KEY (staffId) REFERENCES users(id)
-    );
-
--- Payments table
-CREATE TABLE IF NOT EXISTS payments (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    orderId INT,
-    paymentMethod ENUM('Credit Card', 'Debit Card', 'Cash', 'Online'),
-    paymentStatus ENUM('Pending', 'Completed', 'Failed'),
-    amount DECIMAL(10, 2),
-    paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (orderId) REFERENCES orders(id)
     );
 
 -- Facility table
@@ -98,7 +87,7 @@ CREATE TABLE IF NOT EXISTS Gallery (
     imagePath VARCHAR(255) NULL,
     status VARCHAR(15) DEFAULT('active'),
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Products table
@@ -207,3 +196,18 @@ END IF;
 END //
 
 DELIMITER ;
+
+-- Settings table
+CREATE TABLE IF NOT EXISTS Settings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    siteName VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    logoPath TEXT NOT NULL,
+    siteEmail VARCHAR(255) NOT NULL,
+    siteStreetAddress VARCHAR(255) NOT NULL,
+    siteZip VARCHAR(255) NOT NULL,
+    siteCity VARCHAR(255) NOT NULL,
+    serverEmail VARCHAR(255) NOT NULL,
+    serverPassword VARCHAR(255) NOT NULL,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
