@@ -9,7 +9,43 @@
          pageEncoding="UTF-8" isELIgnored="false" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         crossOrigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+    <%@include file="../assets/js/cart.js"%>
+    <%@include file="../assets/js/my-order.js"%>
+    <%@include file="../assets/js/my-queries.js"%>
+    <%@include file="../assets/js/my-reservation.js"%>
+    <%@include file="../assets/js/checkout.js"%>
+    <%@include file="../assets/library/wow/wow.min.js"%>
+    <%@include file="../assets/library/owl/owl.carousel.js"%>
+
+    // Initiate the wowjs
+    new WOW().init();
+
+    //banner function
+    $(document).ready(function () {
+        $("#owl-banner").owlCarousel({
+            autoplay: true,
+            autoPlay: 1000,
+
+            items: 1,
+            itemsDesktop: [1199, 1],
+            itemsDesktopSmall: [979, 1]
+        });
+    });
+
+    //chain function
+    $(document).ready(function () {
+        $("#owl-chain").owlCarousel({
+            autoplay: true,
+            autoPlay: 1000,
+
+            items: 4,
+            itemsDesktop: [1199, 4],
+            itemsDesktopSmall: [979, 2]
+        });
+    });
+
     function submitSearchForm() {
         var searchInput = document.querySelector('input[name="search"]').value;
         if (searchInput.length >= 3) {
@@ -62,6 +98,37 @@
             });
         });
     });
-    <%@include file="../assets/js/cart.js"%>
-    <%@include file="../assets/js/checkout.js"%>
+
+        // update footer settings
+        fetch('<%= request.getContextPath() %>/settings')
+        .then(response => response.json())
+        .then(data => {
+
+        // Update logo image
+        const footerLogo = document.getElementById('footerLogo');
+        if (data.logoPath) {
+        const logoUrl = '<%= request.getContextPath() %>/assets' + data.logoPath.replace(/\\/g, '/');
+        footerLogo.src = logoUrl;
+        footerLogo.style.display = 'block'; // Show image
+    } else {
+        footerLogo.style.display = 'none'; // Hide image if path is empty
+    }
+
+        // Update address
+        const footerAddress = document.getElementById('footerAddress');
+        if (data.siteStreetAddress || data.siteZip || data.siteCity) {
+        const addressParts = [data.siteStreetAddress, data.siteZip, data.siteCity].filter(part => part).join(', ');
+        footerAddress.textContent = addressParts || 'No address available';
+    } else {
+        footerAddress.textContent = 'No address available';
+    }
+        // Update email
+        const footerEmail = document.getElementById('footerEmail');
+        footerEmail.textContent = data.siteEmail ? data.siteEmail : '';
+
+        // Update desc
+        const footerDESC = document.getElementById('footerDesc');
+        footerDESC.textContent = data.description ? data.description : '';
+    })
+        .catch(error => console.error('Error fetching settings:', error));
 </script>

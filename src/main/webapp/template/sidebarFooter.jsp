@@ -18,7 +18,8 @@
 </div>
 </div>
 
-<script crossorigin="anonymous" src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+<%@ include file="script.jsp" %>
+<%@ include file="admin-staff-script.jsp" %>
 <script><%@include file="../assets/js/sidebar.js"%></script>
 </body>
 </html>

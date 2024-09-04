@@ -28,9 +28,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/users/logout">Logout</a></li>
             </ul>
         </li>
     </ul>
@@ -41,7 +39,7 @@
             <div class="sidenav-menu">
                 <div class="nav">
                     <div class="sidenav-menu-heading">Main Section</div>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/admin">
                         <div class="nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -50,44 +48,32 @@
                         Users
                     </a>
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/restaurant/">
-                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="nav-link-icon"><i class="fa-solid fa-shop"></i></div>
                         Restaurants
                     </a>
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/galleries/">
-                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="nav-link-icon"><i class="fa-solid fa-image"></i></div>
                         Gallery
                     </a>
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/facilities/">
-                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="nav-link-icon"><i class="fa-solid fa-dumbbell"></i></div>
                         Facility
                     </a>
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/offers/">
-                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="nav-link-icon"><i class="fa-solid fa-rectangle-ad"></i></div>
                         Offer
                     </a>
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/products/">
-                        <div class="nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="nav-link-icon"><i class="fa-solid fa-utensils"></i></div>
                         Products
                     </a>
-                    <div class="collapse" id="collapseServices" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="#">Services</a>
-                            <a class="nav-link" href="#">New Service</a>
-                        </nav>
-                    </div>
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " href="${pageContext.request.contextPath}/admin/settings">
                         <div class="nav-link-icon"><i class="fa-solid fa-gear"></i></div>
                         Settings
                     </a>
-                    <a class="nav-link " href="#">
-                        <div class="nav-link-icon"><i class="fa-regular fa-envelope"></i></div>
-                        Mailbox
-                    </a>
-                    <div class="sidenav-menu-heading">Blog Section</div>
-                    <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#collapseBlog" aria-expanded="false" aria-controls="collapseBlog">
-                        <div class="nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Posts
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    <a class="nav-link " href="/admin/report">
+                        <div class="nav-link-icon"><i class="fa-regular fa-file"></i></i></div>
+                        Generate Report
                     </a>
                     <div class="collapse" id="collapseBlog" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sidenav-menu-nested">

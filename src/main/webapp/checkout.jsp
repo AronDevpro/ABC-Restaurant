@@ -62,7 +62,15 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="deliveryMethod" id="takeAway" value="takeAway" onclick="toggleDeliveryFields('takeAway')">
+                                <input class="form-check-input" type="radio" name="deliveryMethod" id="dine-in" value="Dine In" onclick="toggleDeliveryFields('takeAway')">
+                                <label class="form-check-label" for="dine-in">
+                                    Dine-in
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="deliveryMethod" id="takeAway" value="Take Away" onclick="toggleDeliveryFields('takeAway')">
                                 <label class="form-check-label" for="takeAway">
                                     Take Away
                                 </label>
@@ -70,7 +78,7 @@
                         </div>
                         <div class="col">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="deliveryMethod" id="deliver" value="deliver" onclick="toggleDeliveryFields('deliver')">
+                                <input class="form-check-input" type="radio" name="deliveryMethod" id="deliver" value="Deliver" onclick="toggleDeliveryFields('deliver')">
                                 <label class="form-check-label" for="deliver">
                                     Deliver
                                 </label>
