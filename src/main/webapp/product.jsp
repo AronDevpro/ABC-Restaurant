@@ -25,17 +25,20 @@
                     <div onclick="selectCategory('')" style="cursor: pointer;">
                         <p class="${param.filterCategory == '' ? 'text-primary' : ''}">All</p>
                     </div>
-                    <div onclick="selectCategory('Food & Beverage')" style="cursor: pointer;">
-                        <p class="${param.filterCategory == 'Food & Beverage' ? 'text-primary' : ''}">Food & Beverage</p>
+                    <div onclick="selectCategory('food & beverage')" style="cursor: pointer;">
+                        <p class="${param.filterCategory == 'food & beverage' ? 'text-primary' : ''}">Food & Beverage</p>
                     </div>
-                    <div onclick="selectCategory('Rice')" style="cursor: pointer;">
-                        <p class="${param.filterCategory == 'Rice' ? 'text-primary' : ''}">Rice</p>
+                    <div onclick="selectCategory('rice & kottu')" style="cursor: pointer;">
+                        <p class="${param.filterCategory == 'rice & kottu' ? 'text-primary' : ''}">Rice & Kottu</p>
                     </div>
-                    <div onclick="selectCategory('Kottu')" style="cursor: pointer;">
-                        <p class="${param.filterCategory == 'Kottu' ? 'text-primary' : ''}">Kottu</p>
+                    <div onclick="selectCategory('bakery')" style="cursor: pointer;">
+                        <p class="${param.filterCategory == 'bakery' ? 'text-primary' : ''}">Bakery Items</p>
                     </div>
-                    <div onclick="selectCategory('Dessert')" style="cursor: pointer;">
-                        <p class="${param.filterCategory == 'Dessert' ? 'text-primary' : ''}">Dessert</p>
+                    <div onclick="selectCategory('dessert')" style="cursor: pointer;">
+                        <p class="${param.filterCategory == 'dessert' ? 'text-primary' : ''}">Dessert</p>
+                    </div>
+                    <div onclick="selectCategory('sushi')" style="cursor: pointer;">
+                        <p class="${param.filterCategory == 'sushi' ? 'text-primary' : ''}">Sushi Items</p>
                     </div>
                 </form>
             </div>
@@ -51,8 +54,8 @@
             <div class="row">
                 <c:forEach var="product" items="${productList}">
                 <div class="col-12 col-md-6 col-lg-4 mb-3 text-center p-3" >
-                    <div class="container py-3" style="border: 1px solid #e3e0e0; border-radius: 5px">
-                        <img src="${pageContext.request.contextPath}/assets/${product.imagePath.replace('\\', '/')}" alt="${product.name}" width="200px" height="200px">
+                    <div class="container pb-3 px-0" style="border: 1px solid #e3e0e0; border-radius: 5px">
+                        <img src="${pageContext.request.contextPath}/assets/${product.imagePath.replace('\\', '/')}" alt="${product.name}" style="width: 100%; height: 250px; object-fit: cover; display: block;">
                         <h4 class="mt-3 mb-1">${product.name}</h4>
                         <p class="mb-3">Rs. ${product.price}</p>
                         <div class="row">
