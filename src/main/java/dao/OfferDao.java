@@ -12,8 +12,8 @@ public class OfferDao {
     // Method to create a new offer
     public static void createOffer(Offer offer) throws ClassNotFoundException {
         try {
-            String sql = "INSERT INTO offers ( offerName, promoCode, discountPercentage, category, imagePath, status) VALUES (?, ?, ?, ?, ?, ?)";
-            CrudUtil.execute(sql, offer.getOfferName(), offer.getPromoCode(), offer.getDiscountPercentage(), offer.getCategory(), offer.getImagePath(), offer.getStatus());
+            String sql = "INSERT INTO offers ( offerName, promoCode, discountPercentage, category, imagePath) VALUES (?, ?, ?, ?, ?)";
+            CrudUtil.execute(sql, offer.getOfferName(), offer.getPromoCode(), offer.getDiscountPercentage(), offer.getCategory(), offer.getImagePath());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -72,7 +72,6 @@ public class UserDao {
         }
     }
 
-
     // method to get a user by ID
     public static User getUserById(int userId) throws ClassNotFoundException {
         try {
@@ -80,7 +79,22 @@ public class UserDao {
             ResultSet resultSet = CrudUtil.execute(sql, userId);
 
             if (resultSet.next()) {
-                User user = new User();
+                String accountType = resultSet.getString("accountType");
+                User user;
+
+                // Instantiate the correct subclass based on accountType
+                if ("Admin".equalsIgnoreCase(accountType)) {
+                    user = new Admin();
+                    ((Admin) user).setNIC(resultSet.getString("nic"));
+                } else if ("Staff".equalsIgnoreCase(accountType)) {
+                    user = new Staff();
+                    ((Staff) user).setNIC(resultSet.getString("nic"));
+                    ((Staff) user).setPosition(resultSet.getString("position"));
+                } else {
+                    user = new User();  // For general or unrecognized account types
+                }
+
+                // Set common user properties
                 user.setId(resultSet.getInt("id"));
                 user.setFirstName(resultSet.getString("firstName"));
                 user.setLastName(resultSet.getString("lastName"));
@@ -88,15 +102,9 @@ public class UserDao {
                 user.setPassword(resultSet.getString("password"));
                 user.setAddress(resultSet.getString("address"));
                 user.setPhoneNumber(resultSet.getString("phoneNumber"));
-                user.setAccountType(resultSet.getString("accountType"));
+                user.setAccountType(accountType);
                 user.setStatus(resultSet.getString("status"));
 
-                if (user instanceof Admin) {
-                    ((Admin) user).setNIC(resultSet.getString("nic"));
-                } else if (user instanceof Staff) {
-                    ((Staff) user).setNIC(resultSet.getString("nic"));
-                    ((Staff) user).setPosition(resultSet.getString("position"));
-                }
                 return user;
             } else {
                 return null;
@@ -183,6 +191,17 @@ public class UserDao {
         }
 
         ResultSet resultSet = CrudUtil.execute(sql.toString(), params.toArray());
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    // Method to get the count
+    public static int getCustomerCount(String accountType) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM users WHERE accountType = ?";
+
+        ResultSet resultSet = CrudUtil.execute(sql, accountType);
         if (resultSet.next()) {
             return resultSet.getInt(1);
         }

@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.*;
 
 import java.io.IOException;
@@ -57,17 +58,23 @@ public class CustomerController extends HttpServlet {
             case "/orders":
                 getOrderPage(req, resp);
                 break;
-            case "/my-queries":
+            case "/queries":
                 getAllQueryPage(req, resp);
                 break;
-            case "/my-reservations":
+            case "/reservations":
                 getAllReservationPage(req, resp);
                 break;
             case "/view":
                 getOrderItems(req, resp);
                 break;
+            case "/get-user":
+                getUserById(req, resp);
+                break;
             case "/view-query":
                 getQueryById(req, resp);
+                break;
+            case "/logout":
+                logoutUser(req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
@@ -346,5 +353,33 @@ public class CustomerController extends HttpServlet {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving orders.");
         }
+    }
+
+    private void getUserById(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int userId = Integer.parseInt(req.getParameter("id"));
+            User user = UserDao.getUserById(userId);
+            if (user != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(user);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the user.");
+        }
+    }
+
+    private void logoutUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

@@ -90,7 +90,6 @@ public class OfferController extends HttpServlet {
         offer.setDiscountPercentage(Double.parseDouble(req.getParameter("discountPercentage")));
         offer.setCategory(req.getParameter("category"));
         offer.setImagePath(relativePath);
-        offer.setStatus(req.getParameter("status"));
 
         try {
             OfferDao.createOffer(offer);
@@ -192,7 +191,7 @@ public class OfferController extends HttpServlet {
 
             // Get search and filter parameters
             String search = req.getParameter("search");
-            String filterOfferType = req.getParameter("filterUserType");
+            String filterOfferType = req.getParameter("filterOfferType");
 
             List<Offer> offerList = OfferDao.getOfferList(search, filterOfferType, page, size);
             int totalOffer = OfferDao.getOfferCount(search, filterOfferType);
@@ -203,7 +202,7 @@ public class OfferController extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("size", size);
             req.setAttribute("search", search);
-            req.setAttribute("filterUserType", filterOfferType);
+            req.setAttribute("filterOfferType", filterOfferType);
 
             String pageTitle = "Manage Offer";
             req.setAttribute("title", pageTitle);

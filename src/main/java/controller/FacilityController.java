@@ -92,7 +92,6 @@ public class FacilityController extends HttpServlet {
         facility.setDescription(req.getParameter("description"));
         facility.setCategory(req.getParameter("category"));
         facility.setImagePath(relativePath);
-        facility.setStatus(req.getParameter("status"));
 
         try {
             FacilityDao.createFacility(facility);
@@ -126,7 +125,7 @@ public class FacilityController extends HttpServlet {
 
                 String filePath = externalUploadPath + File.separator + fileName;
                 filePart.write(filePath);
-                relativePath = "/uploads/facility" + fileName;
+                relativePath = "/uploads/facility/" + fileName;
             }
             System.out.println(relativePath);
 
@@ -196,7 +195,7 @@ public class FacilityController extends HttpServlet {
 
             // Get search and filter parameters
             String search = req.getParameter("search");
-            String filterFacilityType = req.getParameter("filterUserType");
+            String filterFacilityType = req.getParameter("filterFacilityType");
 
             List<Facility> facilityList = FacilityDao.getFacilityList(search, filterFacilityType, page, size);
             int totalFacility = FacilityDao.getFacilityCount(search, filterFacilityType);
@@ -207,7 +206,7 @@ public class FacilityController extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("size", size);
             req.setAttribute("search", search);
-            req.setAttribute("filterUserType", filterFacilityType);
+            req.setAttribute("filterFacilityType", filterFacilityType);
 
             // Get restaurant list
             List<Restaurant> restaurantList = RestaurantDao.getAllRestaurants();

@@ -70,7 +70,7 @@ public class MenuController extends HttpServlet {
         try {
             // Get pagination parameters
             int page = 1;
-            int size = 10;
+            int size = 9;
 
             if (req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));

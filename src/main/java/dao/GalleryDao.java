@@ -142,4 +142,26 @@ public class GalleryDao {
         }
         return 0;
     }
+
+    // Method to retrieve a active galleries
+    public static List<Gallery> getGalleryActiveList() throws ClassNotFoundException {
+        try {
+
+            String sql = "SELECT * FROM gallery WHERE status='active'";
+
+            ResultSet resultSet = CrudUtil.execute(sql);
+            List<Gallery> galleryList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Gallery gallery = new Gallery();
+                gallery.setTitle(resultSet.getString("title"));
+                gallery.setImagePath(resultSet.getString("imagePath"));
+                galleryList.add(gallery);
+            }
+            return galleryList;
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

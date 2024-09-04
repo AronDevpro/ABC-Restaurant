@@ -213,13 +213,24 @@ public class QueriesDao {
         }
     }
 
-    public static void updateResponse(int id, String response) throws ClassNotFoundException {
+    public static void updateResponse(int id, String response, int StaffId) throws ClassNotFoundException {
         try {
             String status = "answered";
-            String sql = "UPDATE queries SET response = ?, status = ? WHERE id = ?";
-            CrudUtil.execute(sql, response, status, id);
+            String sql = "UPDATE queries SET response = ?, staffId =?, status = ? WHERE id = ?";
+            CrudUtil.execute(sql, response,StaffId, status, id);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Method to get the pending count
+    public static int getPendingQueriesCount() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM queries WHERE status = 'pending'";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
     }
 }

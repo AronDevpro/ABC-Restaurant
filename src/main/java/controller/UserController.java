@@ -30,9 +30,6 @@ public class UserController extends HttpServlet {
         }
 
         switch (pathInfo) {
-            case "/customer":
-                registerCustomer(req, resp);
-                break;
             case "/create":
                 registerUser(req, resp);
                 break;
@@ -66,36 +63,15 @@ public class UserController extends HttpServlet {
             case "/delete":
                 deleteUser(req, resp);
                 break;
+            case "/logout":
+                logoutUser(req, resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
                 break;
         }
 
 
-    }
-    private void registerCustomer(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String userType = req.getParameter("accountType");
-
-        User user = UserFactory.createUser(userType);
-
-        user.setFirstName(req.getParameter("firstName"));
-        user.setLastName(req.getParameter("lastName"));
-        user.setEmail(req.getParameter("email"));
-        user.setPassword(req.getParameter("password"));
-        user.setAddress(req.getParameter("address"));
-        user.setPhoneNumber(req.getParameter("phoneNumber"));
-        user.setAccountType(req.getParameter("accountType"));
-
-        try {
-            UserDao.registerCustomer(user);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String pageTitle = "Register Page";
-        req.setAttribute("title", pageTitle);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/successMessage.jsp");
-        dispatcher.forward(req, resp);
     }
 
     private void registerUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -258,5 +234,14 @@ public class UserController extends HttpServlet {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the user list.");
         }
+    }
+
+    private void logoutUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

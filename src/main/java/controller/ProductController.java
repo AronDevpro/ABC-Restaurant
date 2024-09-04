@@ -193,7 +193,7 @@ public class ProductController extends HttpServlet {
 
             // Get search and filter parameters
             String search = req.getParameter("search");
-            String filterProductType = req.getParameter("filterUserType");
+            String filterProductType = req.getParameter("filterProductType");
 
             List<Product> productList = ProductDao.getProductList(search, filterProductType, page, size);
             int totalProduct = ProductDao.getProductCount(search, filterProductType);
@@ -204,7 +204,7 @@ public class ProductController extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("size", size);
             req.setAttribute("search", search);
-            req.setAttribute("filterUserType", filterProductType);
+            req.setAttribute("filterProductType", filterProductType);
 
             String pageTitle = "Manage Products";
             req.setAttribute("title", pageTitle);

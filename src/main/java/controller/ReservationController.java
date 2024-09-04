@@ -1,11 +1,9 @@
 package controller;
 
 import com.google.gson.Gson;
-import dao.OrderDao;
-import dao.ReservationDao;
-import dao.RestaurantDao;
-import dao.UserDao;
+import dao.*;
 import factory.UserFactory;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.*;
+import util.EmailUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -100,6 +99,10 @@ public class ReservationController extends HttpServlet {
     }
 
     private void confirmReservation(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+        String firstName = user.getFirstName();
+        String email = user.getEmail();
 
         Reservation reservation = new Reservation();
         reservation.setName(req.getParameter("name"));
@@ -113,12 +116,18 @@ public class ReservationController extends HttpServlet {
             ReservationDao.createReservation(reservation);
             int id = ReservationDao.getLastOrderId();
             String ReservationId = ReservationDao.getReservationId(id);
+            Setting setting = SettingDao.getSettingById();
+            String serverEmail = setting.getServerEmail();
+            String serverPassword = setting.getServerPassword();
+            String subject = "Reservation Confirmation";
+            String messageContent = "Dear " + firstName + ",\n\nThank you for your reservation!\n\nYour Reservation ID is: "+ReservationId+"\n\nBest regards,\nABC Restaurant";
+            EmailUtil.sendEmail(email, subject, messageContent,serverEmail,serverPassword);
             req.setAttribute("reservationId", ReservationId);
             String pageTitle = "ABC Restaurant Reservation Confirmation";
             req.setAttribute("title", pageTitle);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/reservation-confirm.jsp");
             dispatcher.forward(req, resp);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | MessagingException e) {
             e.printStackTrace();
         }
     }

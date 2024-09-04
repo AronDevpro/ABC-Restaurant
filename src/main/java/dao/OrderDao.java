@@ -1,9 +1,9 @@
 package dao;
 
 import dbConnection.CrudUtil;
-import model.Facility;
 import model.Order;
 import model.OrderItems;
+import model.Query;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,7 +125,6 @@ public class OrderDao {
         return orders;
     }
 
-
     // Method to get the count of order
     public static int getOrdersCount(int customerId, String search) throws ClassNotFoundException, SQLException {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM orders WHERE customerId = ?");
@@ -169,4 +168,175 @@ public class OrderDao {
         return orderItemsList;
     }
 
+    // Method to change status
+    public static void updateStatus(int id, String status) throws ClassNotFoundException {
+        try {
+            String sql = "UPDATE orders SET status = ? WHERE id = ?";
+            CrudUtil.execute(sql, status, id);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Method to get the list of orders
+    public static List<Order> getOrderList(String search, String filterStatusType, int page, int size) throws ClassNotFoundException {
+        try {
+            int offset = (page - 1) * size;
+            StringBuilder sql = new StringBuilder("SELECT * FROM orders WHERE 1=1");
+
+            if (search != null && !search.isEmpty()) {
+                sql.append(" AND (id LIKE ? OR email LIKE ? OR phoneNumber LIKE ?)");
+            }
+
+            if (filterStatusType != null && !filterStatusType.isEmpty()) {
+                sql.append(" AND status = ?");
+            }
+
+            sql.append(" LIMIT ? OFFSET ?");
+
+            List<Object> params = new ArrayList<>();
+            if (search != null && !search.isEmpty()) {
+                String searchParam = "%" + search + "%";
+                params.add(searchParam);
+                params.add(searchParam);
+                params.add(searchParam);
+            }
+
+            if (filterStatusType != null && !filterStatusType.isEmpty()) {
+                params.add(filterStatusType);
+            }
+
+            params.add(size);
+            params.add(offset);
+
+            ResultSet resultSet = CrudUtil.execute(sql.toString(), params.toArray());
+            List<Order> orderList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setFirstName(resultSet.getString("firstName"));
+                order.setLastName(resultSet.getString("lastName"));
+                order.setPhoneNumber(resultSet.getString("phoneNumber"));
+                order.setDeliveryMethod(resultSet.getString("deliveryMethod"));
+                order.setDeliverDate(resultSet.getString("deliverDate"));
+                order.setDeliverTime(resultSet.getString("deliverTime"));
+                order.setStatus(resultSet.getString("status"));
+                orderList.add(order);
+            }
+            return orderList;
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Method to get the count
+    public static int getOrderCount(String search, String filterStatusType) throws ClassNotFoundException, SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM orders WHERE 1=1");
+
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND (id LIKE ? OR email LIKE ? OR phoneNumber LIKE ?)");
+        }
+
+        if (filterStatusType != null && !filterStatusType.isEmpty()) {
+            sql.append(" AND status = ?");
+        }
+
+        List<Object> params = new ArrayList<>();
+
+        if (search != null && !search.isEmpty()) {
+            String searchParam = "%" + search + "%";
+            params.add(searchParam);
+            params.add(searchParam);
+            params.add(searchParam);
+        }
+
+        if (filterStatusType != null && !filterStatusType.isEmpty()) {
+            params.add(filterStatusType);
+        }
+
+        ResultSet resultSet = CrudUtil.execute(sql.toString(), params.toArray());
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    // Method to get the orders by id
+    public static Order getOrderById(int id) throws ClassNotFoundException {
+        try {
+            String sql = "SELECT * FROM orders WHERE id = ?";
+            ResultSet resultSet = CrudUtil.execute(sql, id);
+            if (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setFirstName(resultSet.getString("firstName"));
+                order.setLastName(resultSet.getString("lastName"));
+                order.setEmail(resultSet.getString("email"));
+                order.setPhoneNumber(resultSet.getString("phoneNumber"));
+                order.setDeliveryMethod(resultSet.getString("deliveryMethod"));
+                order.setDeliverDate(resultSet.getString("deliverDate"));
+                order.setDeliverTime(resultSet.getString("deliverTime"));
+                order.setRestaurantSelect(resultSet.getString("restaurantSelect"));
+                order.setStreetAddress(resultSet.getString("streetAddress"));
+                order.setCity(resultSet.getString("zip"));
+                order.setZip(resultSet.getString("city"));
+                order.setPaymentMethod(resultSet.getString("paymentMethod"));
+                order.setTotal(resultSet.getDouble("total"));
+                order.setStatus(resultSet.getString("status"));
+                return order;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Method to get the count
+    public static int getOrderCount() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM orders WHERE 1=1";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    // Method to get the orders filter
+    public static List<Order> getOrdersByFilter() throws ClassNotFoundException {
+        List<Order> orders = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM orders ORDER BY createdAt DESC LIMIT 10";
+
+            ResultSet rs = CrudUtil.execute(sql);
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setPhoneNumber(rs.getString("phoneNumber"));
+                order.setFirstName(rs.getString("firstName"));
+                order.setLastName(rs.getString("lastName"));
+                order.setDeliveryMethod(rs.getString("deliveryMethod"));
+                order.setPaymentMethod(rs.getString("paymentMethod"));
+                order.setTotal(rs.getDouble("total"));
+                order.setCustomerId(rs.getInt("customerId"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orders;
+    }
+
+    // Method to get the pending count
+    public static int getPendingOrderCount() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM orders WHERE status = 'pending'";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
 }

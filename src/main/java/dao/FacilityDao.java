@@ -13,8 +13,8 @@ public class FacilityDao {
     // Method to create a new facility
     public static void createFacility(Facility facility) throws ClassNotFoundException {
         try {
-            String sql = "INSERT INTO facilities (restaurantId, name, description, category, imagePath, status) VALUES (?, ?, ?, ?, ?, ?)";
-            CrudUtil.execute(sql, facility.getRestaurantId(), facility.getName(), facility.getDescription(), facility.getCategory(), facility.getImagePath(), facility.getStatus());
+            String sql = "INSERT INTO facilities (restaurantId, name, description, category, imagePath) VALUES (?, ?, ?, ?, ?)";
+            CrudUtil.execute(sql, facility.getRestaurantId(), facility.getName(), facility.getDescription(), facility.getCategory(), facility.getImagePath());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -23,7 +23,7 @@ public class FacilityDao {
     // Method to update an existing facility
     public static void updateFacility(Facility facility) throws ClassNotFoundException {
         try {
-            String sql = "UPDATE facilities SET restaurantId = ?, name = ?, description = ?, category = ?, imagePath = ?, status = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?";
+            String sql = "UPDATE facilities SET restaurantId = ?, name = ?, description = ?, category = ?, imagePath = ?, status = ? WHERE id = ?";
             CrudUtil.execute(sql, facility.getRestaurantId(), facility.getName(), facility.getDescription(), facility.getCategory(), facility.getImagePath(), facility.getStatus(), facility.getId());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

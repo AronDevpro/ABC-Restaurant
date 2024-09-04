@@ -3,11 +3,14 @@ package controller;
 import dao.CartDao;
 import dao.OrderDao;
 import dao.RestaurantDao;
+import dao.SettingDao;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.*;
+import util.EmailUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -75,6 +78,11 @@ public class OrderController extends HttpServlet {
         HttpSession session = req.getSession();
         CartDao cartDao = (CartDao) session.getAttribute("cart");
 
+        HttpSession sessionUser = req.getSession();
+        User user = (User) sessionUser.getAttribute("user");
+        String firstName = user.getFirstName();
+        String email = user.getEmail();
+
         if (cartDao == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Cart is empty.");
             return;
@@ -87,11 +95,14 @@ public class OrderController extends HttpServlet {
         order.setDeliverDate(req.getParameter("deliverDate"));
         order.setDeliverTime(req.getParameter("deliverTime"));
         order.setDeliveryMethod(req.getParameter("deliveryMethod"));
-        if ("takeAway".equals(req.getParameter("deliveryMethod"))) {
+        if ("Take Away".equals(req.getParameter("deliveryMethod"))) {
+            order.setRestaurantSelect(req.getParameter("restaurantSelect"));
+        }
+        if ("Dine In".equals(req.getParameter("deliveryMethod"))) {
             order.setRestaurantSelect(req.getParameter("restaurantSelect"));
         }
 
-        if ("deliver".equals(req.getParameter("deliveryMethod"))) {
+        if ("Deliver".equals(req.getParameter("deliveryMethod"))) {
             order.setStreetAddress(req.getParameter("streetAddress"));
             order.setCity(req.getParameter("city"));
             order.setZip(req.getParameter("zip"));
@@ -120,6 +131,14 @@ public class OrderController extends HttpServlet {
             cartDao.clearCart();
 
             String orderUUID = OrderDao.getUUID(orderId);
+
+            Setting setting = SettingDao.getSettingById();
+            String serverEmail = setting.getServerEmail();
+            String serverPassword = setting.getServerPassword();
+            String subject = "Order Confirmation";
+            String messageContent = "Dear " + firstName + ",\n\nThank you for your order!\n\nYour Order ID is: "+orderUUID+"\n\nBest regards,\nABC Restaurant";
+            EmailUtil.sendEmail(email, subject, messageContent,serverEmail,serverPassword);
+
             req.setAttribute("orderUUID", orderUUID);
             req.setAttribute("title", "Order Confirmation");
             RequestDispatcher dispatcher = req.getRequestDispatcher("/order-confirm.jsp");
@@ -127,6 +146,8 @@ public class OrderController extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while creating the order.");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

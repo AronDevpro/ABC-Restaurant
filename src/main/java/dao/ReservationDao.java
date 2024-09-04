@@ -2,6 +2,7 @@ package dao;
 
 import dbConnection.CrudUtil;
 import dbConnection.OutputParam;
+import model.Order;
 import model.Reservation;
 
 import java.sql.ResultSet;
@@ -238,6 +239,51 @@ public class ReservationDao {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Method to get the count
+    public static int getReservationCount() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM reservation WHERE 1=1";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    // Method to get the orders filter
+    public static List<Reservation> getReservationByFilter() throws ClassNotFoundException {
+        List<Reservation> reservations = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM reservation ORDER BY createdAt DESC LIMIT 10";
+
+            ResultSet rs = CrudUtil.execute(sql);
+            while (rs.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setId(rs.getInt("id"));
+                reservation.setPhoneNumber(rs.getString("phoneNumber"));
+                reservation.setName(rs.getString("name"));
+                reservation.setDate(rs.getString("date"));
+                reservation.setTime(rs.getString("time"));
+                reservation.setNoOfPeople(rs.getInt("noOfPeople"));
+                reservations.add(reservation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return reservations;
+    }
+
+    // Method to get the pending count
+    public static int getPendingReservationCount() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT COUNT(*) FROM reservation WHERE status = 'pending'";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
     }
 
 }

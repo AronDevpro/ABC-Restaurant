@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.gson.Gson;
 import dao.*;
 import factory.UserFactory;
 import jakarta.servlet.RequestDispatcher;
@@ -10,11 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.*;
+import util.EmailUtil;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/", "/register", "/login", "/contact", "/offers", "/facility"})
+@WebServlet({"", "/register", "/login", "/contact", "/offers", "/facility", "/products","/settings"})
 public class HomeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -40,11 +42,14 @@ public class HomeController extends HttpServlet {
         String servletPath = req.getServletPath();
 
         switch (servletPath) {
-            case "/":
+            case "":
                 getMainPage(req, resp);
                 break;
             case "/login":
                 getLoginPage(req, resp);
+                break;
+            case "/register":
+                getRegisterPage(req, resp);
                 break;
             case "/contact":
                 getContactPage(req, resp);
@@ -55,6 +60,12 @@ public class HomeController extends HttpServlet {
             case "/facility":
                 getFacilityPage(req, resp);
                 break;
+            case "/products":
+                getProductById(req, resp);
+                break;
+            case "/settings":
+                getSettings(req, resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found.");
                 break;
@@ -63,6 +74,12 @@ public class HomeController extends HttpServlet {
 
     private void getMainPage(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
+            List<Gallery> galleryList = GalleryDao.getGalleryActiveList();
+            req.setAttribute("galleryList", galleryList);
+
+            List<Restaurant> restaurantList = RestaurantDao.getAllRestaurants();
+            req.setAttribute("restaurantList", restaurantList);
+
             String pageTitle = "ABC Restaurant";
             req.setAttribute("title", pageTitle);
             RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
@@ -78,6 +95,17 @@ public class HomeController extends HttpServlet {
             String pageTitle = "ABC Restaurant Login";
             req.setAttribute("title", pageTitle);
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
+            dispatcher.forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving.");
+        }
+    }
+    private void getRegisterPage(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        try {
+            String pageTitle = "ABC Restaurant Register";
+            req.setAttribute("title", pageTitle);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("register.jsp");
             dispatcher.forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -175,9 +203,11 @@ public class HomeController extends HttpServlet {
     }
 
     private void registerCustomer(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String userType = req.getParameter("accountType");
+        String userType = "Customer";
 
         User user = UserFactory.createUser(userType);
+        String email = req.getParameter("email");
+        String firstName = req.getParameter("firstName");
 
         user.setFirstName(req.getParameter("firstName"));
         user.setLastName(req.getParameter("lastName"));
@@ -189,9 +219,12 @@ public class HomeController extends HttpServlet {
 
         try {
             UserDao.registerCustomer(user);
-//            req.setAttribute("title", "Registration Successful");
-//            RequestDispatcher dispatcher = req.getRequestDispatcher("successMessage.jsp");
-//            dispatcher.forward(req, resp);
+            Setting setting = SettingDao.getSettingById();
+            String serverEmail = setting.getServerEmail();
+            String serverPassword = setting.getServerPassword();
+            String subject = "Welcome to ABC Restaurant!";
+            String messageContent = "Dear " + firstName + ",\n\nThank you for creating an account with us!\n\nBest regards,\nABC Restaurant";
+            EmailUtil.sendEmail(email, subject, messageContent,serverEmail,serverPassword);
             resp.sendRedirect("/login");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -217,13 +250,13 @@ public class HomeController extends HttpServlet {
 
                 switch (accountType) {
                     case "Admin":
-                        redirectPage = "/dashboard.jsp";
+                        redirectPage = "/admin";
                         break;
                     case "Customer":
                         redirectPage = "/customer/";
                         break;
                     default:
-                        redirectPage = "/dashboard2.jsp";
+                        redirectPage = "/staff/";
                         break;
                 }
 
@@ -236,6 +269,43 @@ public class HomeController extends HttpServlet {
             e.printStackTrace();
             req.setAttribute("errorMessage", "Something went wrong, please try again.");
             resp.sendRedirect(req.getContextPath() + "/login.jsp?error=Something went wrong, please try again.");
+        }
+    }
+
+    private void getProductById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        try {
+            Product product = ProductDao.getProductById(id);
+            if (product != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(product);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "product not found.");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the product.");
+        }
+    }
+
+    private void getSettings(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Setting setting = SettingDao.getSettingById();
+            if (setting != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(setting);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "setting not found.");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the setting.");
         }
     }
 }

@@ -144,6 +144,11 @@ public class RestaurantDao {
                 Restaurant restaurant = new Restaurant();
                 restaurant.setId(resultSet.getInt("id"));
                 restaurant.setName(resultSet.getString("name"));
+                restaurant.setImage(resultSet.getString("image"));
+                restaurant.setOpenTime(resultSet.getString("openTime"));
+                restaurant.setCloseTime(resultSet.getString("closeTime"));
+                restaurant.setAddress(resultSet.getString("address"));
+                restaurant.setPhoneNumber(resultSet.getString("phoneNumber"));
                 restaurantList.add(restaurant);
             }
             return restaurantList;
