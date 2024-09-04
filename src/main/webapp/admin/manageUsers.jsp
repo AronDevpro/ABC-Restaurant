@@ -4,6 +4,12 @@
 <%@ include file="../template/sideBar.jsp" %>
 <section>
   <div class="container-fluid">
+    <nav aria-label="breadcrumb" class="m-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+      </ol>
+    </nav>
     <div class="row">
       <div class="col-12">
         <div class="card m-3">
@@ -221,93 +227,4 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-  function submitSearchForm() {
-    var searchInput = document.querySelector('input[name="search"]').value;
-    if (searchInput.length >= 3) {
-      document.getElementById("searchForm").submit();
-    }
-  }
-
-  function submitSelectForm() {
-    document.getElementById('filterForm').submit();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    //display addition inputs based on input value on update modal
-    function toggleAdditionalUpdateFields() {
-      const accountType = document.getElementById('updateAccountType').value;
-      const positionField = document.getElementById('updatePositionField');
-      const nicField = document.getElementById('updateNicField');
-
-      if (accountType === 'Admin') {
-        nicField.style.display = 'block';
-      } else if(accountType === 'Staff') {
-        nicField.style.display = 'block';
-        positionField.style.display = 'block';
-      } else {
-        positionField.style.display = 'none';
-        nicField.style.display = 'none';
-      }
-    }
-    document.getElementById('updateAccountType').addEventListener('change', toggleAdditionalUpdateFields);
-
-    //display addition inputs based on select add model
-    function toggleAdditionalFields() {
-      const accountType = document.getElementById('accountType').value;
-      const positionField = document.getElementById('positionField');
-      const nicField = document.getElementById('nicField');
-
-      if (accountType === 'Admin') {
-        nicField.style.display = 'block';
-      } else if(accountType === 'Staff') {
-        nicField.style.display = 'block';
-        positionField.style.display = 'block';
-      } else {
-        positionField.style.display = 'none';
-        nicField.style.display = 'none';
-      }
-    }
-    document.getElementById('accountType').addEventListener('change', toggleAdditionalFields);
-
-    toggleAdditionalFields();
-
-  //   update model
-    const updateModel = document.getElementById('updateModel');
-    const updateModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
-
-    document.querySelectorAll('.view-user-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        const userId = this.getAttribute('data-user-id');
-
-        fetch('<%= request.getContextPath() %>/admin/users/view?id=' + userId)
-                .then(response => response.json())
-                .then(data => {
-                  updateModel.querySelector('input[name="id"]').value = data.id;
-                  updateModel.querySelector('input[name="firstName"]').value = data.firstName;
-                  updateModel.querySelector('input[name="lastName"]').value = data.lastName;
-                  updateModel.querySelector('input[name="email"]').value = data.email;
-                  updateModel.querySelector('input[name="phoneNumber"]').value = data.phoneNumber || '';
-                  updateModel.querySelector('input[name="address"]').value = data.address || '';
-                  if(data.accountType === 'Staff'){
-                    updateModel.querySelector('input[name="nic"]').value = data.nic || '';
-                    updateModel.querySelector('input[name="position"]').value = data.position || '';
-                  } else if(data.accountType === 'Admin'){
-                    updateModel.querySelector('input[name="nic"]').value = data.nic || '';
-                  }
-                  updateModel.querySelector('input[name="accountType"]').value = data.accountType;
-
-
-                  updateModelInstance.show();
-                  toggleAdditionalUpdateFields();
-                })
-                .catch(error => console.error('Error fetching user details:', error));
-      });
-    });
-
-  });
-
-
-</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

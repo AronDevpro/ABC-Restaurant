@@ -58,7 +58,7 @@ function updateCartDropdown() {
                     const promise = fetchProductDetails(productId).then(data => {
                         cartContent += `
                             <li class="dropdown-item d-flex justify-content-between">
-                                <span> <i class="fa-solid fa-trash" onclick="removeFromCart(\${productId})"></i> x\${quantity} \${data.name}</span>
+                                <span> <i class="fa-solid fa-trash" onclick="removeFromCart(\${productId})"></i> \${quantity}x <span class="me-2">\${data.name}</span></span>
                                 <span>Rs.\${data.price}</span>
                             </li>`;
                     });
@@ -81,7 +81,7 @@ function updateCartDropdown() {
 
 // get product detail by id
 function fetchProductDetails(productId) {
-    return fetch(`/admin/products/view?id=\${productId}`)
+    return fetch(`/products?id=\${productId}`)
         .then(response => response.json())
         .catch(error => {
             console.error('Error fetching product details:', error);

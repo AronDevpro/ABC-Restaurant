@@ -5,6 +5,12 @@
 
 <section>
   <div class="container-fluid">
+    <nav aria-label="breadcrumb" class="m-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Products</li>
+      </ol>
+    </nav>
     <div class="row">
       <div class="col-12">
         <div class="card m-3">
@@ -23,11 +29,13 @@
               </div>
               <div class="col-4 col-md-3 col-lg-2">
                 <form method="GET" action="" id="filterForm">
-                  <select name="filterUserType" class="form-select" onchange="submitSelectForm()">
+                  <select name="filterProductType" class="form-select" onchange="submitSelectForm()">
                     <option value="">All</option>
-                    <option value="Event" ${param.filterUserType == 'customer' ? 'selected' : ''}>Customers</option>
-                    <option value="admin" ${param.filterUserType == 'admin' ? 'selected' : ''}>Admins</option>
-                    <option value="staff" ${param.filterUserType == 'staff' ? 'selected' : ''}>Staff</option>
+                    <option value="food & beverage" ${param.filterProductType == 'food & beverage' ? 'selected' : ''}>Food & Beverage</option>
+                    <option value="rice & kottu" ${param.filterProductType == 'rice & kottu' ? 'selected' : ''}>Rice & Kottu</option>
+                    <option value="bakery" ${param.filterProductType == 'bakery' ? 'selected' : ''}>Bakery Items</option>
+                    <option value="dessert" ${param.filterProductType == 'dessert' ? 'selected' : ''}>Dessert</option>
+                    <option value="sushi" ${param.filterProductType == 'sushi' ? 'selected' : ''}>Sushi Items</option>
                   </select>
                 </form>
               </div>
@@ -127,7 +135,13 @@
             <label for="description">Description</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="category" placeholder="Enter Category" name="category" required>
+            <select class="form-select" name="category" id="category" required>
+              <option value="food & beverage">Food & Beverage</option>
+              <option value="rice & kottu">Rice & Kottu</option>
+              <option value="bakery">Bakery Items</option>
+              <option value="dessert">Dessert</option>
+              <option value="sushi">Sushi Items</option>
+            </select>
             <label for="category">Category</label>
           </div>
           <div class="form-floating mb-3">
@@ -168,7 +182,13 @@
             <label for="description">Description</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" placeholder="Enter Category" name="category" required>
+            <select class="form-select" name="category" required>
+              <option value="food & beverage">Food & Beverage</option>
+              <option value="rice & kottu">Rice & Kottu</option>
+              <option value="bakery">Bakery Items</option>
+              <option value="dessert">Dessert</option>
+              <option value="sushi">Sushi Items</option>
+            </select>
             <label for="category">Category</label>
           </div>
           <div class="form-floating mb-3">
@@ -201,55 +221,5 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script>
-  function submitSearchForm() {
-    var searchInput = document.querySelector('input[name="search"]').value;
-    if (searchInput.length >= 3) {
-      document.getElementById("searchForm").submit();
-    }
-  }
-
-  function submitSelectForm() {
-    document.getElementById('filterForm').submit();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    //   update model
-    const updateModel = document.getElementById('updateModel');
-    const updateProductModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
-
-    document.querySelectorAll('.view-facility-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-
-        fetch('<%= request.getContextPath() %>/admin/products/view?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                  updateModel.querySelector('input[name="id"]').value = data.id;
-                  updateModel.querySelector('input[name="name"]').value = data.name;
-                  updateModel.querySelector('input[name="description"]').value = data.description;
-                  updateModel.querySelector('input[name="category"]').value = data.category;
-                  updateModel.querySelector('input[name="price"]').value = data.price;
-                  updateModel.querySelector('select[name="status"]').value = data.status;
-
-                  // Set current image source if available
-                  const imageUrl = data.imagePath ? '<%= request.getContextPath() %>/assets' + data.imagePath.replace(/\\/g, '/') : '';
-                  const currentImage = updateModel.querySelector('#currentImage');
-                  if (imageUrl) {
-                    currentImage.src = imageUrl;
-                    currentImage.style.display = 'block';
-                  } else {
-                    currentImage.style.display = 'none';
-                  }
-
-                  updateProductModelInstance.show();
-                })
-                .catch(error => console.error('Error fetching product details:', error));
-      });
-    });
-  });
-</script>
 
 <%@ include file="../template/sidebarFooter.jsp" %>

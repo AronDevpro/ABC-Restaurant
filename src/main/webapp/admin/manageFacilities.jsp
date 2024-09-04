@@ -5,6 +5,12 @@
 
 <section>
     <div class="container-fluid">
+        <nav aria-label="breadcrumb" class="m-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Facilities</li>
+            </ol>
+        </nav>
         <div class="row">
             <div class="col-12">
                 <div class="card m-3">
@@ -23,11 +29,12 @@
                             </div>
                             <div class="col-4 col-md-3 col-lg-2">
                                 <form method="GET" action="" id="filterForm">
-                                    <select name="filterUserType" class="form-select" onchange="submitSelectForm()">
+                                    <select name="filterFacilityType" class="form-select" onchange="submitSelectForm()">
                                         <option value="">All</option>
-                                        <option value="Event" ${param.filterUserType == 'customer' ? 'selected' : ''}>Customers</option>
-                                        <option value="admin" ${param.filterUserType == 'admin' ? 'selected' : ''}>Admins</option>
-                                        <option value="staff" ${param.filterUserType == 'staff' ? 'selected' : ''}>Staff</option>
+                                        <option value="dining" ${param.filterFacilityType == 'dining' ? 'selected' : ''}>Dining</option>
+                                        <option value="bar" ${param.filterFacilityType == 'bar' ? 'selected' : ''}>Bar</option>
+                                        <option value="valet" ${param.filterFacilityType == 'valet' ? 'selected' : ''}>Valet Service</option>
+                                        <option value="kidZone" ${param.filterFacilityType == 'kidZone' ? 'selected' : ''}>Kids Zone</option>
                                     </select>
                                 </form>
                             </div>
@@ -133,16 +140,17 @@
                         <label for="description">Description</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="category" placeholder="Enter Category" name="category" required>
+                        <select class="form-select" id="category" name="category">
+                            <option value="dining">Dining</option>
+                            <option value="bar">Bar</option>
+                            <option value="valet">Valet Service</option>
+                            <option value="kidZone">Kids Zone</option>
+                        </select>
                         <label for="category">Category</label>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Upload Image</label>
                         <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="status" placeholder="Enter Status" name="status" required>
-                        <label for="status">Status</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -171,19 +179,23 @@
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" id="floatingSelect" name="restaurantId">
-                            <option selected>Select Restaurant</option>
                             <c:forEach var="restaurant" items="${restaurantList}">
                                 <option value="${restaurant.id}">${restaurant.name}</option>
                             </c:forEach>
                         </select>
-                        <label for="floatingSelect">Works with selects</label>
+                        <label for="floatingSelect">Select Restaurant</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" placeholder="Enter Description" name="description" required>
                         <label for="description">Description</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Enter Category" name="category" required>
+                        <select class="form-select" name="category">
+                            <option value="dining">Dining</option>
+                            <option value="bar">Bar</option>
+                            <option value="valet">Valet Service</option>
+                            <option value="kidZone">Kids Zone</option>
+                        </select>
                         <label for="category">Category</label>
                     </div>
                     <div class="mb-3">
@@ -195,8 +207,11 @@
                         <br>
                         <img id="currentImage" src="" alt="Current Image" style="max-width: 100%; height: auto;">
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Enter Status" name="status" required>
+                    <div class="form-floating">
+                        <select class="form-select" id="status" name="status">
+                            <option value="active">Active</option>
+                            <option value="suspend">Suspend</option>
+                        </select>
                         <label for="status">Status</label>
                     </div>
                 </div>
@@ -208,72 +223,5 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script>
-    function submitSearchForm() {
-        var searchInput = document.querySelector('input[name="search"]').value;
-        if (searchInput.length >= 3) {
-            document.getElementById("searchForm").submit();
-        }
-    }
-
-    function submitSelectForm() {
-        document.getElementById('filterForm').submit();
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('td[id^="restaurantName-"]').forEach(function(td) {
-            const facilityId = td.id.split('-')[1];
-            fetchRestaurantName(facilityId, td);
-        });
-
-        function fetchRestaurantName(facilityId, tdElement) {
-            fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + facilityId)
-                .then(response => response.json())
-                .then(data => {
-                    tdElement.textContent = data.name;
-                })
-                .catch(error => {
-                    console.error('Error fetching restaurant details:', error);
-                    tdElement.textContent = 'Error';
-                });
-        }
-
-        //   update model
-        const updateModel = document.getElementById('updateModel');
-        const updateFacilityModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
-
-        document.querySelectorAll('.view-facility-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-
-                fetch('<%= request.getContextPath() %>/admin/facilities/view?id=' + id)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data)
-                        updateModel.querySelector('input[name="id"]').value = data.id;
-                        updateModel.querySelector('select[name="restaurantId"]').value = data.restaurantId;
-                        updateModel.querySelector('input[name="name"]').value = data.name;
-                        updateModel.querySelector('input[name="description"]').value = data.description;
-                        updateModel.querySelector('input[name="category"]').value = data.category;
-                        updateModel.querySelector('input[name="status"]').value = data.status;
-
-                        // Set current image source if available
-                        const imageUrl = data.imagePath ? '<%= request.getContextPath() %>/assets' + data.imagePath.replace(/\\/g, '/') : ''; // Convert backslashes to forward slashes
-                        const currentImage = updateModel.querySelector('#currentImage');
-                        if (imageUrl) {
-                            currentImage.src = imageUrl;
-                            currentImage.style.display = 'block'; // Show image
-                        } else {
-                            currentImage.style.display = 'none'; // Hide image if path is empty
-                        }
-
-                        updateFacilityModelInstance.show();
-                    })
-                    .catch(error => console.error('Error fetching facility details:', error));
-            });
-        });
-    });
-</script>
 
 <%@ include file="../template/sidebarFooter.jsp" %>

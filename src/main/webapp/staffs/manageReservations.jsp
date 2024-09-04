@@ -8,9 +8,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../template/header.jsp" %>
-<%@ include file="../template/sideBar.jsp" %>
+<%@ include file="../template/staffSidebar.jsp" %>
 
 <div class="container">
+    <nav aria-label="breadcrumb" class="m-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/staff/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Manage Reservation</li>
+        </ol>
+    </nav>
     <div class="row">
         <div class="col-12">
             <div class="card m-3">
@@ -120,29 +126,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('td[id^="restaurantName-"]').forEach(function (td) {
-            const id = td.id.split('-')[1];
-            fetchRestaurantName(id, td);
-        });
-
-        function fetchRestaurantName(id, tdElement) {
-            fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                    tdElement.textContent = data.name;
-                })
-                .catch(error => {
-                    console.error('Error fetching restaurant details:', error);
-                    tdElement.textContent = 'Error';
-                });
-        }
-    })
-    function submitSelectForm() {
-        document.getElementById('filterForm').submit();
-    }
-</script>
 
 <%@ include file="../template/sidebarFooter.jsp" %>

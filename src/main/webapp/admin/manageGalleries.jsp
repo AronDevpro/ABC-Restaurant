@@ -5,13 +5,19 @@
 
 <section>
   <div class="container-fluid">
+    <nav aria-label="breadcrumb" class="m-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Gallery</li>
+      </ol>
+    </nav>
     <div class="row">
       <div class="col-12">
         <div class="card m-3">
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-12 col-lg-3">
-                <h4 class="fw-bold">Facilities</h4>
+                <h4 class="fw-bold">Gallery</h4>
               </div>
               <div class="col-6 col-md-7 col-lg-5 ">
                 <form method="GET" action="" id="searchForm">
@@ -132,10 +138,6 @@
             <label for="image" class="form-label">Upload Image</label>
             <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
           </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="status" placeholder="Enter Status" name="status" required>
-            <label for="status">Status</label>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Save Gallery</button>
@@ -182,6 +184,13 @@
             <input type="text" class="form-control" placeholder="Enter Status" name="status" required>
             <label for="status">Status</label>
           </div>
+          <div class="form-floating">
+            <select class="form-select" id="status" name="status">
+              <option value="active">Active</option>
+              <option value="suspend">Suspend</option>
+            </select>
+            <label for="status">Status</label>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Update changes</button>
@@ -191,54 +200,5 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script>
-  function submitSearchForm() {
-    var searchInput = document.querySelector('input[name="search"]').value;
-    if (searchInput.length >= 3) {
-      document.getElementById("searchForm").submit();
-    }
-  }
-
-  function submitSelectForm() {
-    document.getElementById('filterForm').submit();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    //   update model
-    const updateModel = document.getElementById('updateModel');
-    const updateGalleryModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
-
-    document.querySelectorAll('.view-gallery-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-
-        fetch('<%= request.getContextPath() %>/admin/galleries/view?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                  updateModel.querySelector('input[name="id"]').value = data.id;
-                  updateModel.querySelector('input[name="title"]').value = data.title;
-                  updateModel.querySelector('input[name="description"]').value = data.description;
-                  updateModel.querySelector('input[name="category"]').value = data.category;
-                  updateModel.querySelector('input[name="status"]').value = data.status;
-
-                  // Set current image source if available
-                  const imageUrl = data.imagePath ? '<%= request.getContextPath() %>/assets' + data.imagePath.replace(/\\/g, '/') : ''; // Convert backslashes to forward slashes
-                  const currentImage = updateModel.querySelector('#currentImage');
-                  if (imageUrl) {
-                    currentImage.src = imageUrl;
-                    currentImage.style.display = 'block'; // Show image
-                  } else {
-                    currentImage.style.display = 'none'; // Hide image if path is empty
-                  }
-
-                  updateGalleryModelInstance.show();
-                })
-                .catch(error => console.error('Error fetching gallery details:', error));
-      });
-    });
-  });
-</script>
 
 <%@ include file="../template/sidebarFooter.jsp" %>

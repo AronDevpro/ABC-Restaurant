@@ -8,9 +8,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../template/header.jsp" %>
-<%@ include file="../template/sideBar.jsp" %>
+<%@ include file="../template/staffSidebar.jsp" %>
 
 <div class="container">
+    <nav aria-label="breadcrumb" class="m-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/staff/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Manage Queries</li>
+        </ol>
+    </nav>
     <div class="row">
         <div class="col-12">
             <div class="card m-3">
@@ -152,53 +158,5 @@
     </div>
 </div>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('td[id^="customerName-"]').forEach(function (td) {
-            const id = td.id.split('-')[1];
-            fetchCustomerName(id, td);
-        });
-
-        function fetchCustomerName(id, tdElement) {
-            fetch('<%= request.getContextPath() %>/admin/users/view?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                    tdElement.textContent = data.firstName;
-                })
-                .catch(error => {
-                    console.error('Error fetching customer details:', error);
-                    tdElement.textContent = 'Error';
-                });
-        }
-    })
-    function submitSelectForm() {
-        document.getElementById('filterForm').submit();
-    }
-
-    document.querySelectorAll('.view-order-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
-            document.getElementById('queryId').value = id;
-
-            // Fetch order items and update the modal content
-            fetch('<%= request.getContextPath() %>/customer/view-query?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('subject').textContent = data.subject;
-                    document.getElementById('description').textContent = data.description;
-                    if (data.response && data.response.trim() !== "") {
-                        document.getElementById('responseText').textContent = data.response;
-                        document.getElementById('responseTextArea').style.display = 'none';
-                        document.getElementById('replyButton').style.display = 'none';
-                    } else {
-                        document.getElementById('responseTextArea').style.display = 'block';
-                        document.getElementById('replyButton').style.display = 'inline-block';
-                    }
-                })
-                .catch(error => console.error('Error fetching order item details:', error));
-        });
-    });
-</script>
 
 <%@ include file="../template/sidebarFooter.jsp" %>

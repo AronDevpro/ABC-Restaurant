@@ -4,6 +4,12 @@
 <%@ include file="../template/sideBar.jsp" %>
 <section>
   <div class="container-fluid">
+    <nav aria-label="breadcrumb" class="m-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Restaurants</li>
+      </ol>
+    </nav>
     <div class="row">
       <div class="col-12">
         <div class="card m-3">
@@ -197,63 +203,12 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-  function submitSearchForm() {
-    var searchInput = document.querySelector('input[name="search"]').value;
-    if (searchInput.length >= 3) {
-      document.getElementById("searchForm").submit();
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    //   update model
-    const updateModel = document.getElementById('updateModel');
-    const updateModelInstance = bootstrap.Modal.getOrCreateInstance(updateModel);
-
-    document.querySelectorAll('.view-user-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-
-        fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + id)
-                .then(response => response.json())
-                .then(data => {
-                  updateModel.querySelector('input[name="id"]').value = data.id;
-                  updateModel.querySelector('input[name="name"]').value = data.name;
-                  updateModel.querySelector('input[name="description"]').value = data.description;
-                  updateModel.querySelector('input[name="openTime"]').value = data.openTime;
-                  updateModel.querySelector('input[name="closeTime"]').value = data.closeTime;
-                  updateModel.querySelector('input[name="address"]').value = data.address || '';
-                  updateModel.querySelector('input[name="phoneNumber"]').value = data.phoneNumber || '';
-                  updateModel.querySelector('input[name="capacity"]').value = data.capacity || '';
-
-                  // Set current image source if available
-                  const imageUrl = data.image ? '<%= request.getContextPath() %>/assets' + data.image.replace(/\\/g, '/') : '';
-                  const currentImage = updateModel.querySelector('#currentImage');
-                  if (imageUrl) {
-                    currentImage.src = imageUrl;
-                    currentImage.style.display = 'block';
-                  } else {
-                    currentImage.style.display = 'none';
-                  }
-
-                  updateModelInstance.show();
-                })
-                .catch(error => console.error('Error fetching restaurant details:', error));
-      });
-    });
-
-  });
-
-
-</script>
 <%@ include file="../template/sidebarFooter.jsp" %>
