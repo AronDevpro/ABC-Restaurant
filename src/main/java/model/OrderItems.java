@@ -9,6 +9,4 @@ public class OrderItems {
     private int orderId;
     private String item;
     private int quantity;
-
-
 }
