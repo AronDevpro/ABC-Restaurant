@@ -218,4 +218,7 @@
   </div>
 </div>
 
+<script>
+  <%@include file="../assets/js/manageOffers.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

@@ -81,7 +81,7 @@
         const selectedRestaurantElement = document.getElementById('selectedRestaurant');
 
         if (restaurantId) {
-            fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + restaurantId)
+            fetch('<%= request.getContextPath() %>/customer/get-restaurant?id=' + restaurantId)
                 .then(response => response.json())
                 .then(data => {
                     selectedRestaurantElement.textContent = 'Selected Restaurant: ' + data.name;

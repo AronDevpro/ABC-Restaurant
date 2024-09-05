@@ -224,4 +224,7 @@
     </div>
 </div>
 
+<script>
+    <%@include file="../assets/js/manageFacilities.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

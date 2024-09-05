@@ -19,7 +19,6 @@
 </div>
 
 <%@ include file="script.jsp" %>
-<%@ include file="admin-staff-script.jsp" %>
 <script><%@include file="../assets/js/sidebar.js"%></script>
 </body>
 </html>

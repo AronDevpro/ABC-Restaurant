@@ -38,7 +38,7 @@
               <thead class="table-light">
               <tr>
                 <th>#id</th>
-                <th>Restaurant</th>
+                <th>Delivery Method</th>
                 <th>Payment Method</th>
                 <th>Total</th>
                 <th>Status</th>
@@ -49,7 +49,7 @@
               <c:forEach var="order" items="${orderList}">
                 <tr>
                   <td>${order.orderUUID}</td>
-                  <td>${order.restaurantSelect}</td>
+                  <td>${order.deliveryMethod}</td>
                   <td>${order.paymentMethod}</td>
                   <td>${order.total}</td>
                   <td>

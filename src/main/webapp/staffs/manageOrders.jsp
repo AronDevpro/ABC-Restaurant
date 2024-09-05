@@ -172,4 +172,7 @@
     </div>
 </div>
 
+<script>
+    <%@include file="../assets/js/manageOrders.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

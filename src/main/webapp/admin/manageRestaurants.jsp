@@ -211,4 +211,7 @@
   </div>
 </div>
 
+<script>
+  <%@include file="../assets/js/manageRestaurant.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

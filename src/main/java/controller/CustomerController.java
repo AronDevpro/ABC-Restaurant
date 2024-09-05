@@ -73,6 +73,9 @@ public class CustomerController extends HttpServlet {
             case "/view-query":
                 getQueryById(req, resp);
                 break;
+            case "/get-restaurant":
+                getRestaurantById(req, resp);
+                break;
             case "/logout":
                 logoutUser(req, resp);
                 break;
@@ -381,5 +384,24 @@ public class CustomerController extends HttpServlet {
         }
 
         resp.sendRedirect(req.getContextPath() + "/login");
+    }
+
+    private void getRestaurantById(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            Restaurant restaurant = RestaurantDao.getRestaurantById(id);
+            if (restaurant != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(restaurant);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Restaurant not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the Restaurant.");
+        }
     }
 }

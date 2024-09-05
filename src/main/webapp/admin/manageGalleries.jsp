@@ -201,4 +201,7 @@
   </div>
 </div>
 
+<script>
+  <%@include file="../assets/js/manageGalleries.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

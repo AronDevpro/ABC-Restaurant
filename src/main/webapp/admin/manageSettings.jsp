@@ -88,4 +88,7 @@
   </div>
 </section>
 
+<script>
+  <%@include file="../assets/js/manageSettings.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

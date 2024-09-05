@@ -23,7 +23,7 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-5 col-lg-3">
-                            <h4 class="fw-bold">Reservations</h4>
+                            <h4 class="fw-bold">Queries</h4>
                         </div>
                         <div class="col-5 col-lg-6">
                             <form method="GET" action="" id="searchForm">
@@ -158,5 +158,7 @@
     </div>
 </div>
 
-
+<script>
+    <%@include file="../assets/js/manageQueries.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

@@ -91,4 +91,6 @@
         </div>
         </c:if>
     </div>
+</section>
+
 <%@ include file="../template/sidebarFooter.jsp" %>

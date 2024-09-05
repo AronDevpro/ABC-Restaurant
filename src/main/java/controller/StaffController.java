@@ -76,8 +76,14 @@ public class StaffController extends HttpServlet {
             case "/my-account":
                 staffAccount(req, resp);
                 break;
+            case "/get-user":
+                getUserById(req, resp);
+                break;
             case "/logout":
                 logoutUser(req, resp);
+                break;
+            case "/get-restaurant":
+                getRestaurantById(req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
@@ -386,5 +392,43 @@ public class StaffController extends HttpServlet {
         }
 
         resp.sendRedirect(req.getContextPath() + "/login");
+    }
+
+    private void getUserById(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int userId = Integer.parseInt(req.getParameter("id"));
+            User user = UserDao.getUserById(userId);
+            if (user != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(user);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the user.");
+        }
+    }
+
+    private void getRestaurantById(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            Restaurant restaurant = RestaurantDao.getRestaurantById(id);
+            if (restaurant != null) {
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                String jsonResponse = new Gson().toJson(restaurant);
+                resp.getWriter().write(jsonResponse);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Restaurant not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the Restaurant.");
+        }
     }
 }

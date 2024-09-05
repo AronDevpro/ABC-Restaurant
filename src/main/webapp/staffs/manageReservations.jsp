@@ -66,7 +66,7 @@
                                     <td>${reservation.id}</td>
                                     <td>${reservation.name}</td>
                                     <td>${reservation.phoneNumber}</td>
-                                    <td id="restaurantName-${reservation.restaurantId}">Loading...</td>
+                                    <td id="getRestaurantName-${reservation.restaurantId}">Loading...</td>
                                     <td>${reservation.date}</td>
                                     <td>${reservation.time}</td>
                                     <td>${reservation.noOfPeople}</td>
@@ -127,4 +127,7 @@
     </div>
 </div>
 
+<script>
+    <%@include file="../assets/js/manageReservation.js"%>
+</script>
 <%@ include file="../template/sidebarFooter.jsp" %>

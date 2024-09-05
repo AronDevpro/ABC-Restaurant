@@ -30,7 +30,7 @@
                     <a class="nav-link navMod" href="/offers">SPECIAL OFFERS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link navMod" href="/reservation">BOOK NOW</a>
+                    <a class="nav-link navMod" href="/reservation/">BOOK NOW</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link navMod" href="/contact">CONTACT US</a>

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function fetchCustomerName(id, tdElement) {
-        fetch('<%= request.getContextPath() %>/admin/users/view?id=' + id)
+        fetch('<%= request.getContextPath() %>/staff/get-user?id=' + id)
             .then(response => response.json())
             .then(data => {
                 tdElement.textContent = data.firstName;

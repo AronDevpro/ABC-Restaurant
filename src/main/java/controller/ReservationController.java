@@ -86,6 +86,7 @@ public class ReservationController extends HttpServlet {
             String availabilityStatus = ReservationDao.checkAvailability(restaurantId, date, time);
 
             if ("available".equals(availabilityStatus)) {
+                req.setAttribute("title", "ABC Restaurant Reservation Checkout");
                 RequestDispatcher dispatcher = req.getRequestDispatcher("/reservation-checkout.jsp");
                 dispatcher.forward(req, resp);
             } else {
