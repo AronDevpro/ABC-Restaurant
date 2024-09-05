@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class AdminAuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
+        HttpSession session = req.getSession(false);
         // Check if user is authenticated
         if (req.getSession().getAttribute("user") == null) {
             // User is not authenticated, redirect to login page
@@ -35,7 +37,8 @@ public class AdminAuthenticationFilter implements Filter {
             if ("Admin".equals(accountType)) {
                 chain.doFilter(request, response);
             } else {
-                resp.sendRedirect(req.getContextPath() + "/login?error=Unauthorized Access!");
+                session.invalidate();
+                resp.sendRedirect(req.getContextPath() + "/login?error=Unauthorized Access! Your session has been terminated.");
             }
 
         }
