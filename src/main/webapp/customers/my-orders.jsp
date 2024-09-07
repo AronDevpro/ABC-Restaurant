@@ -39,7 +39,6 @@
               <tr>
                 <th>#id</th>
                 <th>Delivery Method</th>
-                <th>Payment Method</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Options</th>
@@ -50,7 +49,6 @@
                 <tr>
                   <td>${order.orderUUID}</td>
                   <td>${order.deliveryMethod}</td>
-                  <td>${order.paymentMethod}</td>
                   <td>${order.total}</td>
                   <td>
                     <c:choose>

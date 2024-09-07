@@ -31,17 +31,16 @@
                                         <input class="form-control" id="firstName" type="text" name="firstName"
                                                placeholder="Enter your first name" minlength="3" required/>
                                         <label for="firstName">First Name</label>
+                                        <div class="" id="fName-error"></div>
                                     </div>
-                                    <div class="" id="fName-error">
-                                    </div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <input class="form-control" id="lastName" type="text" name="lastName"
                                                placeholder="Enter your last name" minlength="3" required/>
                                         <label for="lastName">Last Name</label>
-                                    </div>
-                                    <div class="" id="lName-error">
+                                        <div class="" id="lName-error"></div>
                                     </div>
                                 </div>
                             </div>
@@ -49,30 +48,30 @@
                                 <input class="form-control" id="phoneNumber" name="phoneNumber" type="number"
                                        placeholder="Enter your Phone Number" pattern="[0-9]{10}" required/>
                                 <label for="phoneNumber">Phone Number</label>
+                                <div class="" id="phone-error"></div>
                             </div>
-                            <div class="" id="phone-error">
-                            </div>
+
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="address" name="address" type="text"
                                        placeholder="Enter your address" required/>
                                 <label for="address">Address</label>
+                                <div class="" id="address-error"></div>
                             </div>
-                            <div class="" id="address-error">
-                            </div>
+
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="email" name="email" type="email"
                                        placeholder="name@example.com" required/>
                                 <label for="email">Email address</label>
+                                <div class="" id="email-error"></div>
                             </div>
-                            <div class="" id="email-error">
-                            </div>
+
                             <div class="form-floating mb-3 mb-md-0">
                                 <input minlength="8" class="form-control" id="password" name="password" type="password"
                                        placeholder="Create a password" required/>
                                 <label for="password">Password</label>
+                                <div class="" id="password-error"></div>
                             </div>
-                            <div class="" id="password-error">
-                            </div>
+
                             <div class="mt-4 mb-0">
                                 <div class="d-grid">
                                     <input type="submit" class="btn btn-primary btn-block" value="Create Account">
