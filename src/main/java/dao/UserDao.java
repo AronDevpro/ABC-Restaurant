@@ -207,4 +207,14 @@ public class UserDao {
         }
         return 0;
     }
+
+    //    Method to check email exist
+    public static boolean isEmailExists(String email) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        ResultSet resultSet = CrudUtil.execute(sql, email);
+        if (resultSet.next()) {
+            return resultSet.getInt(1) > 0;
+        }
+        return false;
+    }
 }

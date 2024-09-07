@@ -220,6 +220,11 @@ public class HomeController extends HttpServlet {
         user.setAccountType(userType);
 
         try {
+            if (UserDao.isEmailExists(email)) {
+                resp.sendRedirect(req.getContextPath() + "/register?error=Email already exists.");
+                return;
+            }
+
             UserDao.registerCustomer(user);
             Setting setting = SettingDao.getSettingById();
             String serverEmail = setting.getServerEmail();
@@ -227,14 +232,12 @@ public class HomeController extends HttpServlet {
             String subject = "Welcome to ABC Restaurant!";
             String messageContent = "Dear " + firstName + ",\n\nThank you for creating an account with us!\n\nBest regards,\nABC Restaurant";
             EmailUtil.sendEmail(email, subject, messageContent,serverEmail,serverPassword);
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/login?success=Registration successful! Please log in to continue.");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
             resp.sendRedirect(req.getContextPath() + "/register?error=Database error occurred.");
         } catch (Exception e) {
             e.printStackTrace();
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
             resp.sendRedirect(req.getContextPath() + "/register?error=Something went wrong, please try again.");
         }
     }

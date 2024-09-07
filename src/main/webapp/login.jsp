@@ -41,6 +41,11 @@
                                     <c:out value="${param.error}" />
                                 </div>
                             </c:if>
+                        <c:if test="${not empty param.success}">
+                            <div class="alert alert-success mt-3">
+                                <c:out value="${param.success}" />
+                            </div>
+                        </c:if>
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
                                 <label for="email" class="form-label">Email Address</label>
