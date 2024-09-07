@@ -1,9 +1,6 @@
 package controller;
 
-import dao.CartDao;
-import dao.OrderDao;
-import dao.RestaurantDao;
-import dao.SettingDao;
+import dao.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -107,7 +104,6 @@ public class OrderController extends HttpServlet {
             order.setCity(req.getParameter("city"));
             order.setZip(req.getParameter("zip"));
         }
-        order.setPaymentMethod(req.getParameter("paymentMethod"));
         order.setTotal(Double.parseDouble(req.getParameter("total")));
         order.setCustomerId(Integer.parseInt(req.getParameter("customerId")));
 
@@ -127,8 +123,15 @@ public class OrderController extends HttpServlet {
                 orderItem.setQuantity(quantity);
                 OrderDao.addOrderItems(orderItem);
             }
-
             cartDao.clearCart();
+
+            // create transaction
+            Transaction transaction= new Transaction();
+            transaction.setOrderId(orderId);
+            transaction.setPaymentMethod(req.getParameter("paymentMethod"));
+            transaction.setTotal(Double.parseDouble(req.getParameter("total")));
+
+            TransactionDao.createTransaction(transaction);
 
             String orderUUID = OrderDao.getUUID(orderId);
 

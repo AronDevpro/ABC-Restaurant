@@ -14,8 +14,8 @@ public class OrderDao {
     // Method to create a new order
     public static void createOrder(Order order) throws ClassNotFoundException {
         try {
-            String sql = "INSERT INTO orders (orderUUID, firstName, lastName, email, phoneNumber, deliverDate, deliverTime, deliveryMethod, restaurantSelect, streetAddress, zip, city, paymentMethod, total, customerId) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO orders (orderUUID, firstName, lastName, email, phoneNumber, deliverDate, deliverTime, deliveryMethod, restaurantSelect, streetAddress, zip, city, total, customerId) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             CrudUtil.execute(sql,
                     order.getOrderUUID(),
@@ -30,7 +30,6 @@ public class OrderDao {
                     order.getStreetAddress() != null ? order.getStreetAddress() : null,
                     order.getZip() != null ? order.getZip() : null,
                     order.getCity() != null ? order.getCity() : null,
-                    order.getPaymentMethod(),
                     order.getTotal(),
                     order.getCustomerId()
             );
@@ -113,7 +112,6 @@ public class OrderDao {
                 order.setDeliverTime(rs.getString("deliverTime"));
                 order.setDeliveryMethod(rs.getString("deliveryMethod"));
                 order.setRestaurantSelect(rs.getString("restaurantSelect"));
-                order.setPaymentMethod(rs.getString("paymentMethod"));
                 order.setStatus(rs.getString("status"));
                 order.setTotal(rs.getDouble("total"));
                 order.setCustomerId(customerId);
@@ -281,7 +279,6 @@ public class OrderDao {
                 order.setStreetAddress(resultSet.getString("streetAddress"));
                 order.setCity(resultSet.getString("zip"));
                 order.setZip(resultSet.getString("city"));
-                order.setPaymentMethod(resultSet.getString("paymentMethod"));
                 order.setTotal(resultSet.getDouble("total"));
                 order.setStatus(resultSet.getString("status"));
                 return order;
@@ -318,7 +315,6 @@ public class OrderDao {
                 order.setFirstName(rs.getString("firstName"));
                 order.setLastName(rs.getString("lastName"));
                 order.setDeliveryMethod(rs.getString("deliveryMethod"));
-                order.setPaymentMethod(rs.getString("paymentMethod"));
                 order.setTotal(rs.getDouble("total"));
                 order.setCustomerId(rs.getInt("customerId"));
                 orders.add(order);

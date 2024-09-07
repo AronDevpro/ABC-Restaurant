@@ -24,7 +24,6 @@ public class Order {
     private String streetAddress;
     private String zip;
     private String city;
-    private String paymentMethod;
     private double total;
     private int customerId;
     private String status;

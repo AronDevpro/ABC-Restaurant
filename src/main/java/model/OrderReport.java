@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class OrderReport {
-    private String restaurantName;
+    private String deliverMethod;
     private String deliverDate;
     private Double totalRevenue;
     private int numberOfOrders;

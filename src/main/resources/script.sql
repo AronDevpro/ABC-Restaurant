@@ -118,13 +118,23 @@ CREATE TABLE IF NOT EXISTS Orders (
     streetAddress VARCHAR(150) NULL,
     zip VARCHAR(50) NULL,
     city VARCHAR(50) NULL,
-    paymentMethod VARCHAR(255) NULL,
     total DECIMAL(10, 2),
     customerId INT,
     status VARCHAR(15) DEFAULT('pending'),
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (customerId) REFERENCES users(id)
+    );
+
+-- Orders table
+CREATE TABLE IF NOT EXISTS Transactions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    orderId INT NOT NULL,
+    paymentMethod VARCHAR(255) NULL,
+    total DECIMAL(10, 2),
+    status VARCHAR(15) DEFAULT('success'),
+    CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (orderId) REFERENCES orders(id)
     );
 
 -- Order Items table
