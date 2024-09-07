@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Arosha
@@ -18,7 +19,12 @@
                 <h3 class="text-center login-text mt-3 mb-3">Create Account</h3>
                 <div class="card px-lg-3 pt-lg-3 mt-4 custom-border">
                     <div class="card-body pb-0">
-                        <form class="registration-validation" method="POST" action="<%= request.getContextPath()%>/register" novalidate>
+                        <c:if test="${not empty param.error}">
+                            <div class="alert alert-danger mt-3">
+                                <c:out value="${param.error}" />
+                            </div>
+                        </c:if>
+                        <form class="registration-validation" action="<%= request.getContextPath()%>/register" method="POST" novalidate>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
@@ -26,7 +32,7 @@
                                                placeholder="Enter your first name" minlength="3" required/>
                                         <label for="firstName">First Name</label>
                                     </div>
-                                    <div class="" id="fname-error">
+                                    <div class="" id="fName-error">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -35,7 +41,7 @@
                                                placeholder="Enter your last name" minlength="3" required/>
                                         <label for="lastName">Last Name</label>
                                     </div>
-                                    <div class="" id="lname-error">
+                                    <div class="" id="lName-error">
                                     </div>
                                 </div>
                             </div>
@@ -84,4 +90,8 @@
         </div>
     </div>
 </main>
+
+<script>
+    <%@ include file = "assets/js/register.js"%>
+</script>
 <%@ include file = "template/footer.jsp"%>

@@ -22,8 +22,8 @@ public class GalleryDao {
     // Method to update an existing gallery
     public static void updateGallery(Gallery gallery) throws ClassNotFoundException {
         try {
-            String sql = "UPDATE gallery SET title = ?, description = ?, category = ?, imagePath = ? WHERE id = ?";
-            CrudUtil.execute(sql, gallery.getTitle(), gallery.getDescription(), gallery.getCategory(), gallery.getImagePath(), gallery.getId());
+            String sql = "UPDATE gallery SET title = ?, description = ?, category = ?, imagePath = ?, status = ? WHERE id = ?";
+            CrudUtil.execute(sql, gallery.getTitle(), gallery.getDescription(), gallery.getCategory(), gallery.getImagePath(),gallery.getStatus(), gallery.getId());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

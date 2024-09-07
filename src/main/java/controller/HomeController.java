@@ -101,6 +101,7 @@ public class HomeController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving.");
         }
     }
+
     private void getRegisterPage(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
             String pageTitle = "ABC Restaurant Register";
@@ -112,6 +113,7 @@ public class HomeController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving.");
         }
     }
+
     private void getContactPage(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
             String pageTitle = "ABC Restaurant Contact";
@@ -228,10 +230,12 @@ public class HomeController extends HttpServlet {
             resp.sendRedirect("/login");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
+//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
+            resp.sendRedirect(req.getContextPath() + "/register?error=Database error occurred.");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
+//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
+            resp.sendRedirect(req.getContextPath() + "/register?error=Something went wrong, please try again.");
         }
     }
 
@@ -263,12 +267,12 @@ public class HomeController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + redirectPage);
             } else {
                 req.setAttribute("errorMessage", "Invalid email or password");
-                resp.sendRedirect(req.getContextPath() + "/login.jsp?error=Invalid email or password");
+                resp.sendRedirect(req.getContextPath() + "/login?error=Invalid email or password");
             }
         } catch (Exception e) {
             e.printStackTrace();
             req.setAttribute("errorMessage", "Something went wrong, please try again.");
-            resp.sendRedirect(req.getContextPath() + "/login.jsp?error=Something went wrong, please try again.");
+            resp.sendRedirect(req.getContextPath() + "/login?error=Something went wrong, please try again.");
         }
     }
 

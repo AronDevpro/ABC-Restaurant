@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function fetchRestaurantName(id, tdElement) {
-        fetch('<%= request.getContextPath() %>/admin/restaurant/view?id=' + id)
+        fetch('<%= request.getContextPath() %>/customer/get-restaurant?id=' + id)
             .then(response => response.json())
             .then(data => {
                 tdElement.textContent = data.name;

@@ -31,18 +31,18 @@ public class ReportDao {
 
     //    method to generate order report
     public static List<OrderReport> generateOrderReport(String startDate, String endDate) throws SQLException, ClassNotFoundException, SQLException {
-    String sql = "SELECT o.restaurantSelect AS restaurantName,\n" +
-            "       o.deliverDate,\n" +
+    String sql = "SELECT o.deliverDate,\n" +
+            "       o.deliveryMethod,\n" +
             "       SUM(o.total) AS totalRevenue,\n" +
             "       COUNT(o.id) AS numberOfOrders\n" +
             "FROM Orders o\n" +
             "WHERE o.deliverDate BETWEEN ? AND ?\n" +
-            "GROUP BY o.restaurantSelect, o.deliverDate";
+            "GROUP BY o.deliverDate, o.deliveryMethod";
     ResultSet rs = CrudUtil.execute(sql, startDate, endDate);
     List<OrderReport> reportList = new ArrayList<>();
     while (rs.next()) {
         OrderReport report = new OrderReport();
-        report.setRestaurantName(rs.getString("restaurantName"));
+        report.setDeliverMethod(rs.getString("deliveryMethod"));
         report.setDeliverDate(rs.getString("deliverDate"));
         report.setTotalRevenue(rs.getDouble("totalRevenue"));
         report.setNumberOfOrders(rs.getInt("numberOfOrders"));

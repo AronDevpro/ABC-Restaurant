@@ -33,10 +33,9 @@
         <div class="row mt-lg-4 justify-content-center">
             <div class="card shadow-lg col-lg-5 col-md-8 col-12 p-3 custom-background custom-border">
                 <h3 class="text-center login-text mt-3 mb-3">Welcome Back!</h3>
-                <form action="<%= request.getContextPath()%>/login" method="POST">
+                <form action="<%= request.getContextPath()%>/login" method="POST" class="login-validation login-form mt-3" novalidate>
                 <div class="card p-3 mt-4 custom-border">
                     <div class="card-body">
-                        <form action="/login" class="login-validation login-form mt-3" method="post" novalidate>
                             <c:if test="${not empty param.error}">
                                 <div class="alert alert-danger mt-3">
                                     <c:out value="${param.error}" />
@@ -60,7 +59,6 @@
                                 <a class="small" href="#">Forgot Password?</a>
                                 <button type="submit" name="submit" class="btn btn-primary" >Login</button>
                             </div>
-                        </form>
                         <div class="text-center">
                             <div class="small"><a href="/register">Create New Account</a></div>
                         </div>
@@ -71,4 +69,8 @@
         </div>
     </div>
 </section>
+
+<script>
+    <%@ include file = "assets/js/login.js"%>
+</script>
 <%@ include file = "template/footer.jsp"%>

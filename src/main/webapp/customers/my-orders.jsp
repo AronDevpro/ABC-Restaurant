@@ -126,5 +126,7 @@
   </div>
 </div>
 
-
+<script>
+  <%@include file="../assets/js/my-order.js"%>
+</script>
 <%@ include file="../template/footer.jsp"%>

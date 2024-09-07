@@ -89,6 +89,7 @@ public class GalleryController extends HttpServlet {
         gallery.setDescription(req.getParameter("description"));
         gallery.setCategory(req.getParameter("category"));
         gallery.setImagePath(relativePath);
+        gallery.setStatus(req.getParameter("status"));
 
         try {
             GalleryDao.createGallery(gallery);

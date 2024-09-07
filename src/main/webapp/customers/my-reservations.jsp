@@ -96,4 +96,7 @@
     </div>
 </div>
 
+<script>
+    <%@include file="../assets/js/my-reservation.js"%>
+</script>
 <%@ include file="../template/footer.jsp"%>

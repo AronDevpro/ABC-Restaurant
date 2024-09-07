@@ -144,7 +144,7 @@
               <option value="party">Party Offers</option>
               <option value="delivery">Delivery Offers</option>
             </select>
-            <label for="category">Status</label>
+            <label for="category">Category</label>
           </div>
           <div class="mb-3">
             <label for="image" class="form-label">Upload Image</label>

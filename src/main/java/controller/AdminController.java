@@ -95,7 +95,6 @@ public class AdminController extends HttpServlet {
 
             List<Order> orderList = OrderDao.getOrdersByFilter();
             req.setAttribute("orderList", orderList);
-            System.out.println(orderList);
 
             String pageTitle = "ABC Restaurant Admin Dashboard";
             req.setAttribute("title", pageTitle);

@@ -180,10 +180,6 @@
             <br>
             <img id="currentImage" src="" alt="Current Image" style="max-width: 100%; height: auto;">
           </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" placeholder="Enter Status" name="status" required>
-            <label for="status">Status</label>
-          </div>
           <div class="form-floating">
             <select class="form-select" id="status" name="status">
               <option value="active">Active</option>

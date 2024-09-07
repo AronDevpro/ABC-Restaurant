@@ -121,5 +121,7 @@
     </div>
 </div>
 
-
+<script>
+    <%@include file="../assets/js/my-queries.js"%>
+</script>
 <%@ include file="../template/footer.jsp"%>

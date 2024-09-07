@@ -70,7 +70,7 @@
                 <table class="table table-hover table-bordered">
                     <thead class="table-light">
                     <tr>
-                        <th>Restaurant Name</th>
+                        <th>Deliver Method</th>
                         <th>Deliver Date</th>
                         <th>Total Revenue</th>
                         <th>Number of Orders</th>
@@ -79,7 +79,7 @@
                     <tbody>
                     <c:forEach var="order" items="${orderReportList}">
                         <tr>
-                            <td>${order.restaurantName}</td>
+                            <td>${order.deliverMethod}</td>
                             <td>${order.deliverDate}</td>
                             <td>${order.totalRevenue}</td>
                             <td>${order.numberOfOrders}</td>

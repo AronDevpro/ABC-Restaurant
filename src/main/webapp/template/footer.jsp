@@ -49,6 +49,9 @@
     </div>
   </div>
 </footer>
+<script>
+  <%@ include file="../assets/js/footer.js" %>
+</script>
 <%@ include file="script.jsp" %>
 
 </body>

@@ -65,9 +65,6 @@
                 <c:forEach var="restaurant" items="${restaurantList}">
                 <div class="owl-item">
                     <div class="align-content-end px-3 text-light" style="background:linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%), url('${pageContext.request.contextPath}/assets/${restaurant.image.replace('\\', '/').replace(' ', '%20')}'); width: 350px; height: 400px; background-size: cover;">
-
-                <%--                    <img src="${pageContext.request.contextPath}/assets/${restaurant.image.replace('\\', '/').replace(' ', '%20')}"--%>
-<%--                         alt="${restaurant.name}" style="width: 350px; height: 400px;">--%>
                     <h3 class="text-light">${restaurant.name}</h3>
                     <p>${restaurant.address}</p>
                     <p>${restaurant.phoneNumber}</p>

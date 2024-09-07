@@ -8,6 +8,7 @@
     String firstName = (user != null) ? user.getFirstName() : "";
     String lastName = (user != null) ? user.getLastName() : "";
     String email = (user != null) ? user.getEmail() : "";
+    String phoneNumber = (user != null) ? user.getPhoneNumber() : "";
     Integer customerId = (user != null) ? user.getId() : null;
 %>
 <!doctype html>
@@ -41,7 +42,7 @@
                         <label for="email">Email address</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter Your Phone Number">
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter Your Phone Number" value="<%= phoneNumber %>">
                         <label for="phoneNumber">Phone Number</label>
                     </div>
                     <div class="row">
@@ -93,7 +94,7 @@
                                 <option value="${restaurant.name}">${restaurant.name}</option>
                             </c:forEach>
                         </select>
-                        <label for="restaurantSelect">Select Takeaway Restaurant</label>
+                        <label for="restaurantSelect">Select Restaurant</label>
                     </div>
 
                     <div id="addressContainer" style="display:none;">
