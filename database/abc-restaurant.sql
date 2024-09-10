@@ -65,7 +65,7 @@ CREATE TABLE `gallery` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `gallery` (
 
 LOCK TABLES `gallery` WRITE;
 /*!40000 ALTER TABLE `gallery` DISABLE KEYS */;
-INSERT INTO `gallery` VALUES (1,'Food','Food','Food','/uploads/gallery/1.png','active','2024-09-03 23:15:13','2024-09-03 23:15:13'),(2,'Gallery 2','Gallery 2','Food','/uploads/gallery/2.jpg','active','2024-09-03 23:18:47','2024-09-03 23:18:47'),(3,'Gallery 3','Gallery 3','Food','/uploads/gallery/3.png','active','2024-09-03 23:18:59','2024-09-03 23:18:59'),(4,'Gallery 4','Gallery 4','Food','/uploads/gallery/4.png','active','2024-09-03 23:19:15','2024-09-03 23:19:15'),(5,'Gallery 5','Gallery 5','Food','/uploads/gallery/5.jpg','active','2024-09-03 23:19:37','2024-09-03 23:19:37'),(6,'Gallery 6','Gallery 6','Food','/uploads/gallery/6.png','active','2024-09-03 23:19:47','2024-09-03 23:19:47');
+INSERT INTO `gallery` VALUES (1,'Food','Food','Food','/uploads/gallery/1.png','active','2024-09-03 23:15:13','2024-09-03 23:15:13'),(2,'Gallery 2','Gallery 2','Food','/uploads/gallery/2.jpg','active','2024-09-03 23:18:47','2024-09-03 23:18:47'),(3,'Gallery 3','Gallery 3','Food','/uploads/gallery/3.png','active','2024-09-03 23:18:59','2024-09-03 23:18:59'),(4,'Gallery 4','Gallery 4','Food','/uploads/gallery/4.png','active','2024-09-03 23:19:15','2024-09-03 23:19:15'),(5,'Gallery 5','Gallery 5','Food','/uploads/gallery/5.jpg','active','2024-09-03 23:19:37','2024-09-03 23:19:37'),(6,'Gallery 6','Gallery 6','Food','/uploads/gallery/6.png','active','2024-09-03 23:19:47','2024-09-03 23:19:47'),(8,'Sushi','Sushi','ssss','/uploads/gallery/Screenshot_4.png','suspend','2024-09-10 13:56:59','2024-09-10 13:57:03');
 /*!40000 ALTER TABLE `gallery` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +241,7 @@ CREATE TABLE `queries` (
 
 LOCK TABLES `queries` WRITE;
 /*!40000 ALTER TABLE `queries` DISABLE KEYS */;
-INSERT INTO `queries` VALUES (1,'Deliver Issue','0715544545','','333','dd',3,NULL,'Answered','2024-09-02 12:28:58','2024-09-05 15:06:14'),(2,'Reservation','0785545454','333','333','ddd',3,NULL,'Answered','2024-09-02 12:29:18','2024-09-05 15:06:14'),(3,'Account Issue','0712265456','222','222','',3,NULL,'Answered','2024-09-02 12:50:12','2024-09-05 15:06:14'),(4,'Need help','0665456545','33','333',NULL,3,NULL,'Closed','2024-09-02 12:52:49','2024-09-05 15:06:14'),(5,'ongoing order','0715523212','33','33','dddd',3,3,'Answered','2024-09-02 12:53:23','2024-09-05 15:06:14'),(6,'Order','0711225450','','ww',NULL,3,NULL,'Pending','2024-09-02 12:53:51','2024-09-05 15:06:14'),(7,'Regarding order','0712252222','194f2d38-6a39-420b-8f4b-f8fda1d2c4d8','My order is not received yet. kindly check and let me know.',NULL,14,NULL,'Closed','2024-09-05 13:48:40','2024-09-07 17:18:27'),(8,'Regarding Order','0718827372','','I didn’t receive the last order.”,','We will check about it and Contact you ASAP.',14,NULL,'Answered','2024-09-05 20:09:46','2024-09-05 20:16:14');
+INSERT INTO `queries` VALUES (1,'Deliver Issue','0715544545','','Need Help','We will check about it and Contact you ASAP.',3,NULL,'Answered','2024-09-02 12:28:58','2024-09-10 07:16:20'),(2,'Reservation','0785545454','333','Need Help','We will check about it and Contact you ASAP.',3,NULL,'Answered','2024-09-02 12:29:18','2024-09-10 07:16:20'),(3,'Account Issue','0712265456','222','Need Help','',3,NULL,'Answered','2024-09-02 12:50:12','2024-09-10 07:16:12'),(4,'Need help','0665456545','33','Need Help',NULL,3,NULL,'Closed','2024-09-02 12:52:49','2024-09-10 07:16:12'),(5,'ongoing order','0715523212','33','Need Help','We will check about it and Contact you ASAP.',3,3,'Answered','2024-09-02 12:53:23','2024-09-10 07:16:20'),(6,'Order','0711225450','','ww',NULL,3,NULL,'Pending','2024-09-02 12:53:51','2024-09-05 15:06:14'),(7,'Regarding order','0712252222','194f2d38-6a39-420b-8f4b-f8fda1d2c4d8','My order is not received yet. kindly check and let me know.',NULL,14,NULL,'Closed','2024-09-05 13:48:40','2024-09-07 17:18:27'),(8,'Regarding Order','0718827372','','I didn’t receive the last order.”,','We will check about it and Contact you ASAP.',14,NULL,'Answered','2024-09-05 20:09:46','2024-09-05 20:16:14');
 /*!40000 ALTER TABLE `queries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +347,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (1,'ABC RESTAURANT','Crafting Culinary Memories, One Plate at a Time','/uploads/logo/logo new.png','info@abcres.com','391/11','11201','Colombo 5','kp0552701@gmail.com','iaje fzdn gqps dmbv','2024-09-08 00:52:23');
+INSERT INTO `settings` VALUES (1,'ABC RESTAURANT','Crafting Culinary Memories, One Plate at a Time','/uploads/logo/logo new.png','info@abcres.com','391/11','11201','Colombo 5','example@gmail.com','example123','2024-09-10 15:02:30');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -413,7 +413,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Tharindu','Perera','ideatidy1@gmail.comf','Hyu2wccw','Colombo','0711154555',NULL,NULL,'active','2024-08-17 17:25:44','2024-09-05 19:20:34','Customer'),(3,'arosha','sahan','ideatidy22@gmail.com','Hyu2wccw','31/1, Anuradhapura','0775555545',NULL,NULL,'active','2024-08-31 10:48:47','2024-09-05 19:20:53','Customer'),(4,'Kalana','Gamage','kalan a@gmail.com','1234','Kurunegala','071558987','chef','9482829389V','active','2024-09-03 11:26:38','2024-09-07 22:19:44','Staff'),(5,'Vidura','Shehan','admin@gmail.com','1234','Nugegoda','0754454545',NULL,'948828382V','active','2024-09-03 18:32:05','2024-09-08 00:02:44','Admin'),(13,'Chathura','Alwis','shan11@gmail.com','ddd','Kandy','0721145454',NULL,NULL,'active','2024-09-03 21:53:28','2024-09-05 19:22:18','Customer'),(14,'Arosha','Sahan','arosha@gmail.com','124','Anuradhapura','0712252125',NULL,NULL,'active','2024-09-03 21:59:03','2024-09-07 22:21:05','Staff'),(31,'Kalana','Perera','kalana@gmail.com','12345678','Kurunegala','0712215454','Cashier','91221545422V','active','2024-09-06 02:07:24','2024-09-06 02:07:24','Staff'),(69,'Aron','Sahan','ideatidy@gmail.com','1234','Anuradhapura','0718821212',NULL,NULL,'active','2024-09-07 21:28:36','2024-09-07 23:31:15','Customer');
+INSERT INTO `users` VALUES (1,'Tharindu','Perera','ideatidy1@gmail.comf','12345678','Colombo','0711154555',NULL,NULL,'active','2024-08-17 17:25:44','2024-09-10 12:44:02','Customer'),(3,'arosha','sahan','ideatidy22@gmail.com','12345678','31/1, Anuradhapura','0775555545',NULL,NULL,'active','2024-08-31 10:48:47','2024-09-10 12:44:02','Customer'),(4,'Kalana','Gamage','kalan a@gmail.com','12345678','Kurunegala','071558987','chef','9482829389V','active','2024-09-03 11:26:38','2024-09-10 12:44:02','Staff'),(5,'Vidura','Shehan','admin@gmail.com','12345678','Nugegoda','0754454545',NULL,'948828382V','active','2024-09-03 18:32:05','2024-09-10 12:44:02','Admin'),(13,'Chathura','Alwis','shan11@gmail.com','ABC12345','Kandy','0721145454',NULL,NULL,'active','2024-09-03 21:53:28','2024-09-10 12:44:02','Customer'),(14,'Arosha','Sahan','arosha@gmail.com','12345678','Anuradhapura','0712252125',NULL,NULL,'active','2024-09-03 21:59:03','2024-09-10 12:44:02','Staff'),(31,'Kalana','Perera','kalana@gmail.com','12345678','Kurunegala','0712215454','Cashier','91221545422V','active','2024-09-06 02:07:24','2024-09-06 02:07:24','Staff'),(69,'Aron','Sahan','ideatidy@gmail.com','12345678','Anuradhapura','0718821212',NULL,NULL,'active','2024-09-07 21:28:36','2024-09-10 12:44:02','Customer');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -426,4 +426,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-08  0:53:27
+-- Dump completed on 2024-09-10 15:02:44
